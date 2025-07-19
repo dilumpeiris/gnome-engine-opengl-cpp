@@ -1,0 +1,3 @@
+/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles/GnomeEngine.dir
+/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles/edit_cache.dir
+/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles/rebuild_cache.dir

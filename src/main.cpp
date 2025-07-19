@@ -2,10 +2,13 @@
 #include <iostream>
 #include <unistd.h>
 
-class Game :public Gnome::GnomeEngine {
- public:
-	Gnome::GRectObject * rect2;
-	Gnome::GRectObject * rect3;
+
+// TODO: Make transform.translate() available from Render() {later Update()}.
+//
+class Game : public Gnome::GnomeEngine {
+  public:
+	Gnome::GRect *rect2;
+	Gnome::GRect *rect3;
 
   public:
 	Game() {};
@@ -15,36 +18,20 @@ class Game :public Gnome::GnomeEngine {
 		getcwd(cwd, sizeof(cwd));
 		std::cout << "Working directory: " << cwd << std::endl;
 
-		rect2 = new Gnome::GRectObject(0, 100, 512, 384);
-		rect3 = new Gnome::GRectObject(0, 0, 200, 200);
-		Gnome::GRectObject * rect4 = new Gnome::GRectObject(600, 0, 200, 500);
-
+		rect2 = new Gnome::GRect(0, 100, 512, 384);
+		rect3 = new Gnome::GRect(0, 0, 200, 200);
+		Gnome::GRect *rect4 = new Gnome::GRect(600, 0, 200, 500);
 
 		Gnome::manager->addEntity(rect2);
 		Gnome::manager->addEntity(rect3);
 		Gnome::manager->addEntity(rect4);
-
- std::cout << "addr "<<  Gnome::manager->entities[0] << " " << rect2 << std::endl;
-
-
-
 	}
 
 	void Render() override {
-	//	glClear(GL_COLOR_BUFFER_BIT);
-	//	for (const auto& entity : Gnome::manager->entities) {
-    //		Entity* e = entity.get(); // raw pointer, just for access
-    //		e->draw();
-	//		}
-
-		rect3->draw();
-		rect2->draw();
-		Gnome::manager->entities[2]->draw();
-	}
+	}	
 };
 
 int main() {
-
 	// Create engine instance
 	Game game = Game();
 

@@ -24,16 +24,13 @@
 
 #include "ECS.h"
 
-//
 // TODO: Do you want to seperate and write the code cleanly?
 // TODO: Flush out the GRect and create the GTriangle
 // TODO: Add GCircle.
 // TODO: A geometric shape can have a border and a fill color.
 namespace Gnome {
 
-
 Manager * manager;
-
 
 void printMat4(const glm::mat4& mat) {
     for (int row = 0; row < 4; ++row) {
@@ -44,11 +41,6 @@ void printMat4(const glm::mat4& mat) {
         std::cout << "]\n";
     }
 }
-
-// =====================================================================================================
-// Texture Component
-// =====================================================================================================
-
 
 // =====================================================================================================
 // Shader Component
@@ -62,6 +54,7 @@ public:
 
 public:
 	Shader() {
+		// m:shader
 		vertexSrc = R"(
 			#version 330 core
 	
@@ -106,6 +99,7 @@ public:
 			vec4 color2 = texture(texture2, TexCoord);
 			
 			 FragColor = mix(color1, color2, 0.5); 
+			//  FragColor = vec4(ourColor, 1.0);
 			}
 		)";
 
@@ -137,7 +131,7 @@ public:
 	void use() {
 		glUseProgram(ID);
 	}
-	void update()override {std::cout << "this is shader" << std::endl;}
+	void update()override {}
 
 };
 
@@ -180,22 +174,10 @@ public:
 	}
 
 	void update() override {
-		std::cout << "this is transform" << std::endl;
-	
 		glUniformMatrix4fv(shader_model, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(shader_view, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(shader_projection, 1, GL_FALSE, glm::value_ptr(projection));
 	}
-
-	void printMat4(const glm::mat4& mat) {
-    for (int row = 0; row < 4; ++row) {
-        std::cout << "[ ";
-        for (int col = 0; col < 4; ++col) {
-            std::cout << mat[col][row] << " "; // glm is column-major
-        }
-        std::cout << "]\n";
-    }
-}
 
 	void translate(float x, float y, float z){
 		view = glm::translate(view, glm::vec3(x, y, z));
@@ -208,11 +190,11 @@ public:
 	}
 
 	void scale(float x, float y, float z) {}
-
-
 };
 
-
+// =====================================================================================================
+// Texture Component
+// =====================================================================================================
 class Texture: public Component {
 
 public:
@@ -276,16 +258,20 @@ public:
 
 	}
 
-	void bind(int textureIndex) {
-	glActiveTexture(GL_TEXTURE0 + textureIndex);
-	glBindTexture(GL_TEXTURE_2D, textures[textureIndex]);
+	void bind() {
+		for(int i = 0; i < currentTexLocation; i++) {
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, textures[i]);
+		}
 	}
-
 //	void update()override {std::cout << "this is texture" << std::endl;}
 
 };
 
-class GRectObject: public Entity {
+// =====================================================================================================
+// GRectangle
+// =====================================================================================================
+class GRect: public Entity {
 public:
 	unsigned int VAO;
 
@@ -295,8 +281,8 @@ public:
 
 
 public:
-	GRectObject(): GRectObject(0, 0, 0, 0) {}
-	GRectObject(int x, int y, int width, int height): Entity(0) , transform(0){
+	GRect(): GRect(0, 0, 0, 0) {}
+	GRect(int x, int y, int width, int height): Entity(0) , transform(0){
 		int screen_width = 1024;
 		int screen_height = 768;
 
@@ -388,7 +374,7 @@ public:
 		shader = this->getComponent<Shader>();
 
 		this->addComponent<Transform>(shader->ID);
-		this->addComponent<Texture>();
+	 	this->addComponent<Texture>();
 
 		transform = this->getComponent<Transform>();
 		texture = this->getComponent<Texture>();
@@ -397,34 +383,13 @@ public:
 		texture->loadTexture("tnt.jpg");
 }
 
-//void rotate(float angle, Shader *shader) {
-//	glm::mat4 trans = glm::mat4(1.0f);
-//	trans = glm::rotate(trans, glm::radians(angle), glm::vec3(0.0, 0.0, 1.0f));
-//	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5f));
-//
-//	unsigned int transform = glGetUniformLocation(shader->ID, "model");
-//	glUniformMatrix4fv(transform, 1, GL_FALSE, glm::value_ptr(trans));
-//	}
-	//
-void update() override {
-		// transform->translate(0.001f, 0.0f, 0.0f);
-		Entity::update();
-
-	}
-
-
 void draw() override {
-	
-	texture->bind(0);
-	texture->bind(1);
+
 	shader->use();
+
 	texture->setShaderTextures(shader->ID);
-
-
-	std::cout << VAO << std::endl;
-	std::cout << shader->ID << std::endl;
-	std::cout << texture->textures[0] << " , " << texture->textures[1]<< std::endl;
-	std::cout << "---------------------" << std::endl;
+	texture->bind();
+	transform->update();
 
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -434,7 +399,7 @@ void draw() override {
 };
 
 //=================================
-// Class Declarations
+// GnomeEngine Class
 // ================================
 class GnomeEngine {
   public:
@@ -488,16 +453,9 @@ class GnomeEngine {
 	float m_lastFrameTime;
 };
 
-// ============================================================================
-// IMPLEMENTATIONS
-// ============================================================================
-//
-//
-//
 // =================================
 // GnomeEngine Implementation
 // =================================
-//
 inline GnomeEngine::GnomeEngine()
     : m_window(nullptr), m_running(false), m_windowWidth(800), m_windowHeight(600),
       m_windowTitle("GnomeEngine"), m_lastFrameTime(0.0f) {
@@ -566,7 +524,7 @@ inline void GnomeEngine::Run() {
 
 	// Main game loop.
 	while (!glfwWindowShouldClose(m_window) && m_running) {
-		// glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Calculate delta time
 		auto currentTime = std::chrono::high_resolution_clock::now();
@@ -579,11 +537,10 @@ inline void GnomeEngine::Run() {
 		// Update game logic
 		Update(deltaTime);
 
-		manager->update();	
-		manager->draw();
-
 		Render();
 
+		manager->update();	
+		manager->draw();
 
 		// Swap buffers and poll events
 		glfwSwapBuffers(m_window);

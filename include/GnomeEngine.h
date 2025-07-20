@@ -181,8 +181,6 @@ public:
 
 	void translate(float x, float y, float z){
 		view = glm::translate(view, glm::vec3(x, y, z));
-	// float time_value = glfwGetTime();
-	// float rad_value = sin(time_value)*360;
 	}
 
 	void rotate(float angle, float x, float y, float z) {
@@ -192,80 +190,96 @@ public:
 	void scale(float x, float y, float z) {}
 };
 
+struct Texture {
+	unsigned int ID;
+	const char * name;
+	float transparency;
+};
+
 // =====================================================================================================
-// Texture Component
+// Material Component
 // =====================================================================================================
-class Texture: public Component {
+class Material: public Component {
 
 public:
 	unsigned int ID;
-	unsigned int * textures = new unsigned int[16];
-	
+
+	std::vector<Texture> texture_items;	
 	int currentTexLocation = 0;
 
 public:
-	Texture() {
+	Material() {
 	
 	}
 
-	void loadTexture(const char *fileName, bool repeat_x = false, bool repeat_y = false, bool flipped = false) {
+	void addTexture(const char* filePath,  bool repeat_x = false, bool repeat_y = false, bool flipped = false) {
+		Texture text;
+		text.name = "texture00";
+
+		int width, height, nrChannels;
+		GLenum format;
+		unsigned char* data = loadImage(filePath, &width, &height, &nrChannels, &format, flipped);
+
+		glGenTextures(1, &text.ID);
+		glBindTexture(GL_TEXTURE_2D, text.ID);
+
+		if (repeat_x) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		} else {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		}
+
+		if (repeat_y) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		} else {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		}
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		texture_items.emplace_back(text);
+
+		currentTexLocation++;
+		stbi_image_free(data);
+
+	}
+unsigned char* loadImage(const char *fileName, int *width, int *height, int *nrChannels, GLenum *format, bool flipped= false) {
 
 		std::stringstream ss;
 		ss << "../assets/" << fileName;
 		std::string temp = ss.str();
 		const char *filePath = temp.c_str();
 	
-		glGenTextures(1, textures + currentTexLocation);
-		glBindTexture(GL_TEXTURE_2D, textures[currentTexLocation]);
-	
-		if (repeat_x) {
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		} else {
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		}
-		if (repeat_y) {
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		} else {
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		}
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-		int width, height, nrChannels;
-	
 		stbi_set_flip_vertically_on_load(!flipped);
 	
-		unsigned char *data = stbi_load(filePath, &width, &height, &nrChannels, 0);
+		unsigned char *data = stbi_load(filePath, width, height, nrChannels, 0);
 	
 		if (data) {
-			GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
+			*format = (*nrChannels == 4) ? GL_RGBA : GL_RGB;
 		} else {
 			std::cout << "Error: Failed to load to texture:" << filePath << std::endl;
 			std::cout << "Reason: " << stbi_failure_reason() << std::endl;
 		}
-		
-		currentTexLocation++;
-		stbi_image_free(data);
-
+	return data;
 	}
-
+	
 	void setShaderTextures(unsigned int shaderID){
-
 		glUniform1i(glGetUniformLocation(shaderID, "texture1"), 0);
 		glUniform1i(glGetUniformLocation(shaderID, "texture2"), 1);
-
 	}
 
 	void bind() {
 		for(int i = 0; i < currentTexLocation; i++) {
 			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, textures[i]);
+			glBindTexture(GL_TEXTURE_2D, texture_items[i].ID);
 		}
 	}
-//	void update()override {std::cout << "this is texture" << std::endl;}
 
+//	void update()override {std::cout << "this is texture" << std::endl;}
 };
 
 // =====================================================================================================
@@ -277,7 +291,7 @@ public:
 
 	Transform * transform;
 	Shader * shader;
-	Texture * texture;
+	Material * texture;
 
 
 public:
@@ -359,7 +373,7 @@ public:
 		                      (void *)(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
 
-		// Texture coordinates
+		// Material coordinates
 		glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
 		                      (void *)(6 * sizeof(float)));
 		glEnableVertexAttribArray(3);
@@ -368,27 +382,25 @@ public:
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-
-
 		this->addComponent<Shader>();
 		shader = this->getComponent<Shader>();
 
 		this->addComponent<Transform>(shader->ID);
-	 	this->addComponent<Texture>();
+	 	this->addComponent<Material>();
 
 		transform = this->getComponent<Transform>();
-		texture = this->getComponent<Texture>();
+		texture = this->getComponent<Material>();
 
-		texture->loadTexture("crate.jpg");
-		texture->loadTexture("tnt.jpg");
+		texture->addTexture("crate.jpg");
+		texture->addTexture("tnt.jpg");
 }
 
 void draw() override {
-
 	shader->use();
 
 	texture->setShaderTextures(shader->ID);
 	texture->bind();
+	
 	transform->update();
 
 	glBindVertexArray(VAO);
@@ -398,9 +410,9 @@ void draw() override {
 }
 };
 
-//=================================
+// =====================================================================================================
 // GnomeEngine Class
-// ================================
+// =====================================================================================================
 class GnomeEngine {
   public:
 	glm::mat4 view;

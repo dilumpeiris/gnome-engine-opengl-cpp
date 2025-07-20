@@ -2,7 +2,6 @@
 #include <iostream>
 #include <unistd.h>
 
-
 // TODO: Make transform.translate() available from Render() {later Update()}.
 //
 class Game : public Gnome::GnomeEngine {
@@ -28,9 +27,10 @@ class Game : public Gnome::GnomeEngine {
 	}
 
 	void Render() override {
+
+		rect2->transform->translate(0.005f, 0.0f, 0.0f);
 	}	
 };
-
 int main() {
 	// Create engine instance
 	Game game = Game();

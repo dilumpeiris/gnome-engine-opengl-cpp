@@ -1,13 +1,13 @@
 [
 {
   "directory": "/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build",
-  "command": "/usr/bin/c++  -I/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include -std=gnu++17 -arch arm64 -o CMakeFiles/GnomeEngine.dir/src/main.cpp.o -c /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/main.cpp",
+  "command": "/usr/bin/c++  -I/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include -g -std=gnu++17 -arch arm64 -o CMakeFiles/GnomeEngine.dir/src/main.cpp.o -c /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/main.cpp",
   "file": "/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/main.cpp",
   "output": "CMakeFiles/GnomeEngine.dir/src/main.cpp.o"
 },
 {
   "directory": "/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build",
-  "command": "/usr/bin/cc  -I/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/include -isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include  -arch arm64 -o CMakeFiles/GnomeEngine.dir/src/glad.c.o -c /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/glad.c",
+  "command": "/usr/bin/cc  -I/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/include -isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include -g -arch arm64 -o CMakeFiles/GnomeEngine.dir/src/glad.c.o -c /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/glad.c",
   "file": "/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/glad.c",
   "output": "CMakeFiles/GnomeEngine.dir/src/glad.c.o"
 }

@@ -23,6 +23,29 @@
 			"suffix" : ""
 		}
 	},
-	"objects" : [],
-	"reply" : {}
+	"objects" : 
+	[
+		{
+			"jsonFile" : "codemodel-v2-5beff238b3e6b2512167.json",
+			"kind" : "codemodel",
+			"version" : 
+			{
+				"major" : 2,
+				"minor" : 8
+			}
+		}
+	],
+	"reply" : 
+	{
+		"codemodel-v2" : 
+		{
+			"jsonFile" : "codemodel-v2-5beff238b3e6b2512167.json",
+			"kind" : "codemodel",
+			"version" : 
+			{
+				"major" : 2,
+				"minor" : 8
+			}
+		}
+	}
 }

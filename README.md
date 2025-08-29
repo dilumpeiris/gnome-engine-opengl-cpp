@@ -1,19 +1,19 @@
 # GnomeEngine
 
-A simple game engine built with OpenGL and C++ as a **single header library**.
+A simple game engine built with OpenGL and C++ as a **header only library**.
 
 ## Features
 
-- **Single header library** - Just include `GnomeEngine.h` and you're ready to go!
+- **Single header** - Just include `GnomeEngine.h` and the other required libraries.
 - OpenGL 3.3 Core Profile rendering
 - GLFW window management
 - Cross-platform support (Windows, macOS, Linux)
-- Modern C++17 codebase
 - Clean, extensible architecture
 
 ## Dependencies
 
 - **OpenGL** - For rendering
+- **GLAD** - To handle function pointers.
 - **GLFW** - For window management and input handling
 - **CMake** - For build system
 
@@ -62,7 +62,7 @@ GnomeEngine/
 
 ## Usage
 
-Since GnomeEngine is a single header library, you just need to include the header file:
+Since GnomeEngine is a single header library, you just need to include the header file (with the required dependencies installed):
 
 ```cpp
 #include "GnomeEngine.h"  // That's it! Everything is included
@@ -86,15 +86,12 @@ To use GnomeEngine in your own project:
 1. Copy `include/GnomeEngine.h` to your project
 2. Include it in your source files: `#include "GnomeEngine.h"`
 3. Link against OpenGL and GLFW in your build system
-4. That's it! No separate compilation needed.
 
 ## Controls
 
 - **ESC** - Close the application
 
 ## Next Steps
-
-This is a basic boilerplate. You can extend it by adding:
 
 - Shader management
 - Mesh and model loading
@@ -104,7 +101,3 @@ This is a basic boilerplate. You can extend it by adding:
 - Audio system
 - Physics integration
 - And much more!
-
-## License
-
-MIT License

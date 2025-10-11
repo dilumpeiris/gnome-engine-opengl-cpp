@@ -1,7 +1,7 @@
 
 # A Sample Usage (Current stable production)
 ```main.cpp``` to create a simple rectangle with a texture and move it across the screen.
-```
+```c++
 #include <iostream>
 #include <unistd.h>
 
@@ -52,7 +52,7 @@ int main() {
 }
 ```
 
-https://github.com/user-attachments/assets/dd14b2ba-706a-42ab-9c4e-a2a45f994457
+![sample-rectangle-movement](https://github.com/user-attachments/assets/c886c6fe-d973-4d79-b46f-f34ed0fce32b)
 
 
 # What Is GnomeEngine?

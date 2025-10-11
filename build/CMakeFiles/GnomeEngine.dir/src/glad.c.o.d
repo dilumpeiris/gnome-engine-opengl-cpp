@@ -1,5 +1,5 @@
 CMakeFiles/GnomeEngine.dir/src/glad.c.o: \
-  /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/glad.c \
+  /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/glad.c \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config_site \
@@ -103,8 +103,8 @@ CMakeFiles/GnomeEngine.dir/src/glad.c.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/secure/_strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
-  /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/include/glad/glad.h \
-  /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/include/KHR/khrplatform.h \
+  /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/include/glad/glad.h \
+  /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/include/KHR/khrplatform.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/dlfcn.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stdbool.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdbool.h

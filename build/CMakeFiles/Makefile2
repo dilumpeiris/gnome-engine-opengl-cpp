@@ -54,10 +54,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine
+CMAKE_SOURCE_DIR = /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build
+CMAKE_BINARY_DIR = /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -85,14 +85,14 @@ clean: CMakeFiles/GnomeEngine.dir/clean
 CMakeFiles/GnomeEngine.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GnomeEngine.dir/build.make CMakeFiles/GnomeEngine.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GnomeEngine.dir/build.make CMakeFiles/GnomeEngine.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles --progress-num=1,2,3 "Built target GnomeEngine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build/CMakeFiles --progress-num=1,2,3 "Built target GnomeEngine"
 .PHONY : CMakeFiles/GnomeEngine.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/GnomeEngine.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/GnomeEngine.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build/CMakeFiles 0
 .PHONY : CMakeFiles/GnomeEngine.dir/rule
 
 # Convenience name for target.
@@ -102,7 +102,7 @@ GnomeEngine: CMakeFiles/GnomeEngine.dir/rule
 # codegen rule for target.
 CMakeFiles/GnomeEngine.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GnomeEngine.dir/build.make CMakeFiles/GnomeEngine.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles --progress-num=1,2,3 "Finished codegen for target GnomeEngine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build/CMakeFiles --progress-num=1,2,3 "Finished codegen for target GnomeEngine"
 .PHONY : CMakeFiles/GnomeEngine.dir/codegen
 
 # clean rule for target.

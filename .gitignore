@@ -1,0 +1,53 @@
+# --- Build folders ---
+build/
+bin/
+out/
+dist/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# --- Compiled objects & binaries ---
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.dylib
+*.lib
+*.exe
+*.out
+
+# --- IDE / Editor configs ---
+.clangd
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*.swo
+
+# --- Logs / Debug ---
+*.log
+*.pid
+*.tmp
+
+# --- macOS system files ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- Other temporary / local files ---
+*.bak
+*.old
+*.orig
+
+# --- Dependency / external tools (optional) ---
+node_modules/
+venv/
+.env
+.cache/
+
+# --- User configs ---
+*.user
+*.local

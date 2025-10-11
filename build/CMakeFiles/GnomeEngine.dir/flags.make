@@ -5,17 +5,17 @@
 # compile CXX with /usr/bin/c++
 C_DEFINES = 
 
-C_INCLUDES = -I/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/include -isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
+C_INCLUDES = -I/Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/include -isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
 
-C_FLAGSarm64 = -g -arch arm64
+C_FLAGSarm64 =  -arch arm64
 
-C_FLAGS = -g -arch arm64
+C_FLAGS =  -arch arm64
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
+CXX_INCLUDES = -I/Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
 
-CXX_FLAGSarm64 = -g -std=gnu++17 -arch arm64
+CXX_FLAGSarm64 = -std=gnu++17 -arch arm64
 
-CXX_FLAGS = -g -std=gnu++17 -arch arm64
+CXX_FLAGS = -std=gnu++17 -arch arm64
 

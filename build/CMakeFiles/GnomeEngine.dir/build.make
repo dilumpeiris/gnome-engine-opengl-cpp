@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine
+CMAKE_SOURCE_DIR = /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build
+CMAKE_BINARY_DIR = /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/GnomeEngine.dir/depend.make
@@ -73,32 +73,32 @@ CMakeFiles/GnomeEngine.dir/codegen:
 .PHONY : CMakeFiles/GnomeEngine.dir/codegen
 
 CMakeFiles/GnomeEngine.dir/src/main.cpp.o: CMakeFiles/GnomeEngine.dir/flags.make
-CMakeFiles/GnomeEngine.dir/src/main.cpp.o: /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/main.cpp
+CMakeFiles/GnomeEngine.dir/src/main.cpp.o: /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/main.cpp
 CMakeFiles/GnomeEngine.dir/src/main.cpp.o: CMakeFiles/GnomeEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/GnomeEngine.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/GnomeEngine.dir/src/main.cpp.o -MF CMakeFiles/GnomeEngine.dir/src/main.cpp.o.d -o CMakeFiles/GnomeEngine.dir/src/main.cpp.o -c /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/GnomeEngine.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/GnomeEngine.dir/src/main.cpp.o -MF CMakeFiles/GnomeEngine.dir/src/main.cpp.o.d -o CMakeFiles/GnomeEngine.dir/src/main.cpp.o -c /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/main.cpp
 
 CMakeFiles/GnomeEngine.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/GnomeEngine.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/main.cpp > CMakeFiles/GnomeEngine.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/main.cpp > CMakeFiles/GnomeEngine.dir/src/main.cpp.i
 
 CMakeFiles/GnomeEngine.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/GnomeEngine.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/main.cpp -o CMakeFiles/GnomeEngine.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/main.cpp -o CMakeFiles/GnomeEngine.dir/src/main.cpp.s
 
 CMakeFiles/GnomeEngine.dir/src/glad.c.o: CMakeFiles/GnomeEngine.dir/flags.make
-CMakeFiles/GnomeEngine.dir/src/glad.c.o: /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/glad.c
+CMakeFiles/GnomeEngine.dir/src/glad.c.o: /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/glad.c
 CMakeFiles/GnomeEngine.dir/src/glad.c.o: CMakeFiles/GnomeEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/GnomeEngine.dir/src/glad.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/GnomeEngine.dir/src/glad.c.o -MF CMakeFiles/GnomeEngine.dir/src/glad.c.o.d -o CMakeFiles/GnomeEngine.dir/src/glad.c.o -c /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/glad.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/GnomeEngine.dir/src/glad.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/GnomeEngine.dir/src/glad.c.o -MF CMakeFiles/GnomeEngine.dir/src/glad.c.o.d -o CMakeFiles/GnomeEngine.dir/src/glad.c.o -c /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/glad.c
 
 CMakeFiles/GnomeEngine.dir/src/glad.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/GnomeEngine.dir/src/glad.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/glad.c > CMakeFiles/GnomeEngine.dir/src/glad.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/glad.c > CMakeFiles/GnomeEngine.dir/src/glad.c.i
 
 CMakeFiles/GnomeEngine.dir/src/glad.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/GnomeEngine.dir/src/glad.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/glad.c -o CMakeFiles/GnomeEngine.dir/src/glad.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/glad.c -o CMakeFiles/GnomeEngine.dir/src/glad.c.s
 
 # Object files for target GnomeEngine
 GnomeEngine_OBJECTS = \
@@ -115,7 +115,7 @@ bin/GnomeEngine: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Libr
 bin/GnomeEngine: /opt/homebrew/lib/libglfw.3.4.dylib
 bin/GnomeEngine: /opt/homebrew/lib/libglm.dylib
 bin/GnomeEngine: CMakeFiles/GnomeEngine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable bin/GnomeEngine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable bin/GnomeEngine"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GnomeEngine.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -127,6 +127,6 @@ CMakeFiles/GnomeEngine.dir/clean:
 .PHONY : CMakeFiles/GnomeEngine.dir/clean
 
 CMakeFiles/GnomeEngine.dir/depend:
-	cd /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build /Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/build/CMakeFiles/GnomeEngine.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build /Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/build/CMakeFiles/GnomeEngine.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/GnomeEngine.dir/depend
 

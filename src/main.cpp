@@ -1,35 +1,31 @@
-#include "GnomeEngine.h"
 #include <iostream>
 #include <unistd.h>
 
-// TODO: Make transform.translate() available from Render() {later Update()}.
-//
+#include "GnomeEngine.h"
+#include "GRectangle.h"
+
 class Game : public Gnome::GnomeEngine {
   public:
-	Gnome::GRect *rect2;
-	Gnome::GRect *rect3;
+	// Create a Rectangle object using the prebuilt GRect Entity class.
+	GRect *my_rect;
 
   public:
-	Game() {};
-
 	void setup() {
 		char cwd[1024];
 		getcwd(cwd, sizeof(cwd));
 		std::cout << "Working directory: " << cwd << std::endl;
 
-		rect2 = new Gnome::GRect(0, 100, 512, 384);
-		rect3 = new Gnome::GRect(0, 0, 200, 200);
-		Gnome::GRect *rect4 = new Gnome::GRect(600, 0, 200, 500);
+		// Initialize my_rect with position and size data.
+		my_rect = new GRect(0, 100, 512, 384);
 
-		Gnome::manager->addEntity(rect2);
-		Gnome::manager->addEntity(rect3);
-		Gnome::manager->addEntity(rect4);
+		// Add my_rect to the game object manager in Gnome.
+		Gnome::manager->addEntity(my_rect);
+
+		// Add a texture to my_rect with the Material Component.
+		my_rect->material->addTexture("crate.jpg");
 	}
 
-	void Render() override {
-
-		rect2->transform->translate(0.005f, 0.0f, 0.0f);
-	}	
+	void Render() override { my_rect->transform->translate(0.005f, 0.0f, 0.0f); }
 };
 int main() {
 	// Create engine instance
@@ -40,10 +36,13 @@ int main() {
 		std::cerr << "Failed to initialize GnomeEngine!" << std::endl;
 		return -1;
 	}
+
+	// Run all the setup code.
 	game.setup();
+
 	// Run the engine (this will block until the window is closed)
 	game.Run();
 
-	// Engine will automatically shut down when destroyed
+	// Engine will automatically shut down when destroyed.
 	return 0;
 }

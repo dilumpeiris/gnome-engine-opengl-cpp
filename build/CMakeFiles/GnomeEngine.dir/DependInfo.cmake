@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/glad.c" "CMakeFiles/GnomeEngine.dir/src/glad.c.o" "gcc" "CMakeFiles/GnomeEngine.dir/src/glad.c.o.d"
-  "/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/src/main.cpp" "CMakeFiles/GnomeEngine.dir/src/main.cpp.o" "gcc" "CMakeFiles/GnomeEngine.dir/src/main.cpp.o.d"
+  "/Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/glad.c" "CMakeFiles/GnomeEngine.dir/src/glad.c.o" "gcc" "CMakeFiles/GnomeEngine.dir/src/glad.c.o.d"
+  "/Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/src/main.cpp" "CMakeFiles/GnomeEngine.dir/src/main.cpp.o" "gcc" "CMakeFiles/GnomeEngine.dir/src/main.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

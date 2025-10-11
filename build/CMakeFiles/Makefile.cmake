@@ -7,7 +7,7 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/Users/dilumpeiris/Documents/Projects/Personal/GnomeEngine/CMakeLists.txt"
+  "/Users/dilumpeiris/Documents/Projects/Personal/gnome-engine/CMakeLists.txt"
   "CMakeFiles/4.0.3/CMakeCCompiler.cmake"
   "CMakeFiles/4.0.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/4.0.3/CMakeSystem.cmake"

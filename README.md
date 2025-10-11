@@ -62,7 +62,7 @@ GnomeEngine is a simple 2D game engine built with OpenGL and C++ as a **header o
 
 ## Features
 
-- **Single header** - Just include `GnomeEngine.h` and the other required libraries.
+- **Header Only** - Just include `GnomeEngine.h` and the other required header files.
 - OpenGL 3.3 Core Profile rendering
 - GLFW window management
 - Cross-platform support (Windows, macOS, Linux)
@@ -113,9 +113,19 @@ GnomeEngine/
 ├── CMakeLists.txt          # Main CMake configuration
 ├── README.md               # This file
 ├── include/                # Header files
-│   └── GnomeEngine.h       # Single header library (complete implementation)
+│   └── glad/
+│   └── KHR/
+│   └── GnomeEngine.h       # Main header file
+│   └── ECS.h 
+│   └── Transfrom.h
+│   └── Material.h
+│   └── Shader.h
+│   └── GRectangle.h
+│   └── stb_image.h
+
 └── src/                    # Source files
     └── main.cpp            # Demo application entry point
+    └── glad.cpp    
 ```
 
 ## Usage

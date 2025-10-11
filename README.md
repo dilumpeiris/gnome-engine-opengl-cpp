@@ -52,7 +52,8 @@ int main() {
 }
 ```
 
-![sample-rectangle-movement](https://github.com/user-attachments/assets/c886c6fe-d973-4d79-b46f-f34ed0fce32b)
+![sample-rectangle-movement](https://github.com/user-attachments/assets/ed63e0e5-fd91-4982-8686-74059a34c1bc)
+
 
 
 # What Is GnomeEngine?

@@ -20,13 +20,13 @@ Makefile
 *.out
 
 # --- IDE / Editor configs ---
-.clangd
 .vscode/
 .idea/
 *.code-workspace
 *.swp
 *.swo
-
+.clangd
+.DS_Store
 # --- Logs / Debug ---
 *.log
 *.pid

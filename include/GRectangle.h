@@ -111,8 +111,7 @@ class GRect : public Entity {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		this->addComponent<Shader>();
-
-		this->addComponent<Transform>(shader->ID);
+		this->addComponent<Transform>(this->getComponent<Shader>()->ID);
 		this->addComponent<Material>();
 
 		transform = this->getComponent<Transform>();

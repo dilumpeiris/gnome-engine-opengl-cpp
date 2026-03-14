@@ -18,8 +18,12 @@ class Game : public Gnome::GnomeEngine {
 		// Initialize my_rect with position and size data.
 		my_rect = new GRect(0, 100, 512, 384);
 
+		std::cout << "my_rect created" << std::endl;
+
 		// Add my_rect to the game object manager in Gnome.
 		Gnome::manager->addEntity(my_rect);
+
+		std::cout << "my_rect added to manager" << std::endl;
 
 		// Add a texture to my_rect with the Material Component.
 		my_rect->material->addTexture("crate.jpg");

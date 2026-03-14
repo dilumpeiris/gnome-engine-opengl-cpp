@@ -1,8 +1,8 @@
 #include <iostream>
 #include <unistd.h>
 
-#include "GnomeEngine.h"
-#include "GRectangle.h"
+#include "core/GnomeEngine.h"
+#include "entities/GRectangle.h"
 
 class Game : public Gnome::GnomeEngine {
   public:
@@ -18,19 +18,19 @@ class Game : public Gnome::GnomeEngine {
 		// Initialize my_rect with position and size data.
 		my_rect = new GRect(0, 100, 512, 384);
 
-		std::cout << "my_rect created" << std::endl;
-
 		// Add my_rect to the game object manager in Gnome.
 		Gnome::manager->addEntity(my_rect);
-
-		std::cout << "my_rect added to manager" << std::endl;
 
 		// Add a texture to my_rect with the Material Component.
 		my_rect->material->addTexture("crate.jpg");
 	}
 
-	void Render() override { my_rect->transform->translate(0.005f, 0.0f, 0.0f); }
+	void Render() override {
+		my_rect->transform->translate(0.005f, 0.0f, 0.0f);
+		my_rect->transform->rotate(0.5f, 0.0f, 1.0f, 0.0f);
+	}
 };
+
 int main() {
 	// Create engine instance
 	Game game = Game();

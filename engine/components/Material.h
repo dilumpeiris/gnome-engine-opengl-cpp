@@ -1,5 +1,5 @@
 #pragma once
-#include "ECS.h"
+#include "ecs/ECS.h"
 #include <iostream>
 #include <sstream>
 #include <memory.h>
@@ -113,7 +113,7 @@ class Material : public Component {
 	                         GLenum *format, bool flipped = false) {
 
 		std::stringstream ss;
-		ss << "../assets/" << fileName;
+		ss << "../assets/textures/" << fileName;
 		std::string temp = ss.str();
 		const char *filePath = temp.c_str();
 

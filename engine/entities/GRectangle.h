@@ -7,9 +7,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Transform.h"
-#include "Material.h"
-#include "Shader.h"
+#include "components/Transform.h"
+#include "components/Material.h"
+#include "components/Shader.h"
 
 // =====================================================================================================
 // GRectangle

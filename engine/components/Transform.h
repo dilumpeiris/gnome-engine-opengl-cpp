@@ -54,7 +54,9 @@ class Transform : public Component {
 
 	void translate(float x, float y, float z) { view = glm::translate(view, glm::vec3(x, y, z)); }
 
-	void rotate(float angle, float x, float y, float z) {}
+	void rotate(float angle, float x, float y, float z) {
+		view = glm::rotate(view, glm::radians(angle), glm::vec3(x, y, z));
+	}
 
-	void scale(float x, float y, float z) { view = glm::translate(view, glm::vec3(x, y, z)); }
+	void scale(float x, float y, float z) { view = glm::scale(view, glm::vec3(x, y, z)); }
 };

@@ -10,6 +10,7 @@
 #include "components/Transform.h"
 #include "components/Material.h"
 #include "components/Shader.h"
+#include "input/InputHandler.h"
 
 // =====================================================================================================
 // GRectangle
@@ -132,5 +133,9 @@ class GRect : public Entity {
 		glUniform1i(glGetUniformLocation(shader->ID, "frameIndex"), 0);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
+
+		if (InputHandler::get().isKeyDown(GLFW_KEY_SPACE)) {
+			std::cout << "Space key pressed" << std::endl;
+		}
 	}
 };

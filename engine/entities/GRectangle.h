@@ -40,8 +40,8 @@ class GRect : public Entity {
 
 		float vertices[] = {
 		    // positions // colors // texture coords
-		    pos_x + size_x / 2.0f,
-		    pos_y + size_y / 2.0f,
+		    size_x / 2.0f,
+		    size_y / 2.0f,
 		    0.0f,
 		    1.0f,
 		    0.0f,
@@ -49,8 +49,8 @@ class GRect : public Entity {
 		    1.0f,
 		    1.0f, // top right
 
-		    pos_x + size_x / 2.0f,
-		    pos_y - size_y / 2.0f,
+		    size_x / 2.0f,
+		    -size_y / 2.0f,
 		    0.0f,
 		    0.0f,
 		    1.0f,
@@ -58,8 +58,8 @@ class GRect : public Entity {
 		    1.0f,
 		    0.0f, // bottom right
 
-		    pos_x - size_x / 2.0f,
-		    pos_y - size_y / 2.0f,
+		    -size_x / 2.0f,
+		    -size_y / 2.0f,
 		    0.0f,
 		    0.0f,
 		    0.0f,
@@ -67,8 +67,8 @@ class GRect : public Entity {
 		    0.0f,
 		    0.0f, // bottom left
 
-		    pos_x - size_x / 2.0f,
-		    pos_y + size_y / 2.0f,
+		    -size_x / 2.0f,
+		    size_y / 2.0f,
 		    0.0f,
 		    1.0f,
 		    1.0f,
@@ -119,6 +119,7 @@ class GRect : public Entity {
 		material = this->getComponent<Material>();
 		shader = this->getComponent<Shader>();
 
+		transform->translate(pos_x, pos_y, 0.0f);
 		material->setShaderTextures(shader->ID);
 	}
 

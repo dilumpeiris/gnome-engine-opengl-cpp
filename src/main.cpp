@@ -1,7 +1,10 @@
 #include <iostream>
 #include <unistd.h>
+#include <cmath>
 
+// Not using this order give a redefinition error.
 #include "core/GnomeEngine.h"
+#include "InputHandler.h"
 #include "entities/GRectangle.h"
 
 class Game : public Gnome::GnomeEngine {
@@ -26,8 +29,31 @@ class Game : public Gnome::GnomeEngine {
 	}
 
 	void Render() override {
-		my_rect->transform->translate(0.005f, 0.0f, 0.0f);
-		my_rect->transform->rotate(0.5f, 0.0f, 1.0f, 0.0f);
+
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_A)) {
+			my_rect->transform->translate(-0.005f, 0.0f, 0.0f);
+		}
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_W)) {
+			my_rect->transform->translate(0.0f, 0.005f, 0.0f);
+		}
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_S)) {
+			my_rect->transform->translate(0.0f, -0.005f, 0.0f);
+		}
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_D)) {
+			my_rect->transform->translate(0.005f, 0.0f, 0.0f);
+		}
+
+		if (InputHandler::get().isMouseHeld(GLFW_MOUSE_BUTTON_1)) {
+			double dx = InputHandler::get().mouseDeltaX;
+			double dy = InputHandler::get().mouseDeltaY;
+			if (dx != 0.0 || dy != 0.0) {
+				if (std::abs(dx) >= std::abs(dy)) {
+					my_rect->transform->rotate(5.0f, 0.0f, dx, 0.0f);
+				} else {
+					my_rect->transform->rotate(5.0f, dy, 0.0f, 0.0f);
+				}
+			}
+		}
 	}
 };
 

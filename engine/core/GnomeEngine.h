@@ -21,6 +21,7 @@
 
 #include "ECS.h"
 #include "InputHandler.h"
+#include "types.h"
 
 namespace Gnome {
 

@@ -6,6 +6,7 @@
 #include "core/GnomeEngine.h"
 #include "InputHandler.h"
 #include "entities/GRectangle.h"
+#include "types.h"
 
 class Game : public Gnome::GnomeEngine {
   public:
@@ -31,16 +32,16 @@ class Game : public Gnome::GnomeEngine {
 	void Render() override {
 
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_A)) {
-			my_rect->transform->translate(-0.005f, 0.0f, 0.0f);
+			my_rect->transform->translateAbsolute(-0.005f, 0.0f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_W)) {
-			my_rect->transform->translate(0.0f, 0.005f, 0.0f);
+			my_rect->transform->translateAbsolute(0.0f, 0.005f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_S)) {
-			my_rect->transform->translate(0.0f, -0.005f, 0.0f);
+			my_rect->transform->translateAbsolute(0.0f, -0.005f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_D)) {
-			my_rect->transform->translate(0.005f, 0.0f, 0.0f);
+			my_rect->transform->translateAbsolute(0.005f, 0.0f, 0.0f);
 		}
 
 		if (InputHandler::get().isMouseHeld(GLFW_MOUSE_BUTTON_1)) {
@@ -48,9 +49,9 @@ class Game : public Gnome::GnomeEngine {
 			double dy = InputHandler::get().mouseDeltaY;
 			if (dx != 0.0 || dy != 0.0) {
 				if (std::abs(dx) >= std::abs(dy)) {
-					my_rect->transform->rotate(5.0f, 0.0f, dx, 0.0f);
+					my_rect->transform->rotateAbsolute(5.0f, 0.0f, dx, 0.0f);
 				} else {
-					my_rect->transform->rotate(5.0f, dy, 0.0f, 0.0f);
+					my_rect->transform->rotateAbsolute(5.0f, dy, 0.0f, 0.0f);
 				}
 			}
 		}

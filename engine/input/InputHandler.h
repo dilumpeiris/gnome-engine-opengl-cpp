@@ -4,6 +4,7 @@
 #include <functional>
 #include <GLFW/glfw3.h>
 #include <unordered_map>
+#include "types.h"
 
 using KeyCallback = std::function<void(int key)>;
 

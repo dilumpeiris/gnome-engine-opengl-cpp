@@ -1,171 +1,225 @@
+# GnomeEngine
 
-# A Sample Usage (Current stable production)
-```main.cpp``` to create a simple rectangle with a texture and move it across the screen.
-```c++
+A simple 3D-capable game engine built with **OpenGL** and **C++**, structured as a modular header-only framework.
+
+---
+
+## Sample Usage
+
+`src/main.cpp` — creating a textured rectangle, moving it with the keyboard, and rotating it with mouse drag:
+
+```cpp
 #include <iostream>
-#include <unistd.h>
+#include <cmath>
 
-#include "GnomeEngine.h"
-#include "GRectangle.h"
+#include "core/GnomeEngine.h"
+#include "InputHandler.h"
+#include "entities/GRectangle.h"
 
 class Game : public Gnome::GnomeEngine {
   public:
-	// Create a Rectangle object using the prebuilt GRect Entity class.
 	GRect *my_rect;
 
   public:
 	void setup() {
-		char cwd[1024];
-		getcwd(cwd, sizeof(cwd));
-		std::cout << "Working directory: " << cwd << std::endl;
-
-		// Initialize my_rect with position and size data.
-		my_rect = new GRect(0, 100, 512, 384);
-
-		// Add my_rect to the game object manager in Gnome.
+		my_rect = new GRect(0, 0, 512, 384);
 		Gnome::manager->addEntity(my_rect);
-
-		// Add a texture to my_rect with the Material Component.
 		my_rect->material->addTexture("crate.jpg");
 	}
 
-	void Render() override { my_rect->transform->translate(0.005f, 0.0f, 0.0f); }
-};
-int main() {
-	// Create engine instance
-	Game game = Game();
+	void Render() override {
+		// WASD - world-space translation
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_A))
+			my_rect->transform->translateAbsolute(-0.005f, 0.0f, 0.0f);
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_D))
+			my_rect->transform->translateAbsolute(0.005f, 0.0f, 0.0f);
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_W))
+			my_rect->transform->translateAbsolute(0.0f, 0.005f, 0.0f);
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_S))
+			my_rect->transform->translateAbsolute(0.0f, -0.005f, 0.0f);
 
-	// Initialize the engine
-	if (!game.Initialize(1024, 768, "GnomeEngine Demo")) {
-		std::cerr << "Failed to initialize GnomeEngine!" << std::endl;
-		return -1;
+		// Left mouse drag - viewport-relative rotation (one axis at a time)
+		if (InputHandler::get().isMouseHeld(GLFW_MOUSE_BUTTON_1)) {
+			double dx = InputHandler::get().mouseDeltaX;
+			double dy = InputHandler::get().mouseDeltaY;
+			if (dx != 0.0 || dy != 0.0) {
+				if (std::abs(dx) >= std::abs(dy))
+					my_rect->transform->rotateAbsolute(5.0f, 0.0f, dx, 0.0f);
+				else
+					my_rect->transform->rotateAbsolute(5.0f, dy, 0.0f, 0.0f);
+			}
+		}
 	}
+};
 
-	// Run all the setup code.
+int main() {
+	Game game;
+	if (!game.Initialize(1024, 768, "GnomeEngine Demo")) return -1;
 	game.setup();
-
-	// Run the engine (this will block until the window is closed)
 	game.Run();
-
-	// Engine will automatically shut down when destroyed.
 	return 0;
 }
 ```
 
-![sample-rectangle-movement](https://github.com/user-attachments/assets/ed63e0e5-fd91-4982-8686-74059a34c1bc)
+---
 
+## What Is GnomeEngine?
 
+GnomeEngine is a lightweight 3D game engine framework built on **OpenGL 3.3 Core Profile**, using an **Entity-Component System (ECS)** architecture. It is structured as a modular header-only library.
 
-# What Is GnomeEngine?
-
-GnomeEngine is a simple 2D game engine built with OpenGL and C++ as a **header only library/Framework**.
+---
 
 ## Features
 
-- **Header Only** - Just include `GnomeEngine.h` and the other required header files.
-- OpenGL 3.3 Core Profile rendering
-- GLFW window management
-- Cross-platform support (Windows, macOS, Linux)
-- Clean, extensible architecture
+- **Header-only** — include and go, no separate compilation needed
+- **Entity-Component System (ECS)** — flexible architecture for attaching components to game objects
+- **Transform Component** — supports local and world-space translate, rotate, and scale
+  - `translate` / `translateAbsolute` — local vs. world-space movement
+  - `rotate` / `rotateAbsolute` — local vs. viewport-relative rotation (like Blender/Unity)
+  - `setPosition`, `setRotation`, `setScale` — absolute setters
+  - `getPosition`, `getRotation`, `getScale` — state readers
+- **Material Component** — texture loading via `stb_image`
+- **Shader Component** — built-in default vertex/fragment shaders with model/view/projection uniforms
+- **Input Handling** — frame-accurate keyboard and mouse input via `InputHandler` singleton
+  - Key states: `Down`, `Held`, `Released`, `Up`
+  - Mouse button states with per-frame delta tracking (`mouseDeltaX`, `mouseDeltaY`)
+  - Scroll wheel index
+- **Built-in Entity: `GRect`** — a textured rectangle with Transform, Shader, and Material pre-attached
+- **GLM integration** — matrix math for transforms and projections
+- **Delta time** — passed through the update loop for frame-rate-independent logic
+- **VSync** — enabled by default
+- **macOS (Apple Silicon) support** — tested on M1 with OpenGL 4.1 Metal
 
-## Dependencies
-
-- **OpenGL** - For rendering
-- **GLAD** - To handle function pointers.
-- **GLFW** - For window management and input handling
-- **CMake** - For build system
-
-## Building
-
-### Prerequisites
-
-On macOS, you can install dependencies using Homebrew:
-
-```bash
-brew install glfw cmake
-```
-
-### Build Instructions
-
-1. Clone or navigate to the project directory
-2. Create a build directory:
-   ```bash
-   mkdir build
-   cd build
-   ```
-3. Generate build files with CMake:
-   ```bash
-   cmake ..
-   ```
-4. Build the project:
-   ```bash
-   make
-   ```
-5. Run the engine:
-   ```bash
-   ./bin/GnomeEngine
-   ```
+---
 
 ## Project Structure
 
 ```
-GnomeEngine/
-├── CMakeLists.txt          # Main CMake configuration
-├── README.md               # This file
-├── include/                # Header files
-│   └── glad/
-│   └── KHR/
-│   └── GnomeEngine.h       # Main header file
-│   └── ECS.h 
-│   └── Transfrom.h
-│   └── Material.h
-│   └── Shader.h
-│   └── GRectangle.h
-│   └── stb_image.h
-
-└── src/                    # Source files
-    └── main.cpp            # Demo application entry point
-    └── glad.cpp    
+gnome-engine-opengl-cpp/
+├── CMakeLists.txt
+├── README.md
+├── assets/                         # Runtime assets (textures, etc.)
+├── engine/
+│   ├── core/
+│   │   ├── GnomeEngine.h           # Main engine class (init, loop, shutdown)
+│   │   └── types.h                 # Shared types: Vector2, Vector3, Vector4
+│   ├── ecs/
+│   │   └── ECS.h                   # Entity-Component System base classes
+│   ├── components/
+│   │   ├── Transform.h             # Position, rotation, scale (local + absolute)
+│   │   ├── Material.h              # Texture loading and binding
+│   │   └── Shader.h                # GLSL shader compilation and linking
+│   ├── entities/
+│   │   └── GRectangle.h            # Pre-built textured rectangle entity (GRect)
+│   └── input/
+│       └── InputHandler.h          # Keyboard + mouse input, per-frame delta
+├── src/
+│   └── main.cpp                    # Demo application
+└── vendor/                         # Third-party libs (GLAD, stb_image, etc.)
 ```
 
-## Usage
+---
 
-Since GnomeEngine is a single header library, you just need to include the header file (with the required dependencies installed):
+## Dependencies
+
+| Dependency | Purpose |
+|---|---|
+| **OpenGL** | Rendering |
+| **GLAD** | OpenGL function pointer loading |
+| **GLFW** | Window management and OS input events |
+| **GLM** | Linear algebra / matrix math |
+| **stb_image** | Texture loading |
+| **CMake** | Build system |
+
+Install on macOS with Homebrew:
+
+```bash
+brew install glfw cmake glm
+```
+
+---
+
+## Building
+
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build .
+./bin/GnomeEngine
+```
+
+---
+
+## Controls (Demo App)
+
+| Input | Action |
+|---|---|
+| `W` / `A` / `S` / `D` | Move rectangle (world-space) |
+| Left mouse drag | Rotate rectangle (viewport-relative, one axis at a time) |
+| `ESC` | Close window |
+
+---
+
+## Transform API Reference
 
 ```cpp
-#include "GnomeEngine.h"  // That's it! Everything is included
+// Local-space (relative to object orientation)
+transform->translate(x, y, z);
+transform->rotate(angle, x, y, z);
 
-int main() {
-    Gnome::GnomeEngine engine;
-    
-    if (!engine.Initialize(800, 600, "My Game")) {
-        return -1;
-    }
-    
-    engine.Run();
-    return 0;
-}
+// World-space / absolute (always along screen axes)
+transform->translateAbsolute(x, y, z);
+transform->rotateAbsolute(angle, x, y, z);
+
+// Absolute setters (resets prior state)
+transform->setPosition(x, y, z);
+transform->setRotation(angle, x, y, z);
+transform->setScale(x, y, z);
+
+// Readers
+Vector3 pos = transform->getPosition();
+Vector3 rot = transform->getRotation();
+Vector3 scl = transform->getScale();
 ```
 
-### Using GnomeEngine in Your Own Project
+---
 
-To use GnomeEngine in your own project:
+## InputHandler API Reference
 
-1. Copy `include/GnomeEngine.h` to your project
-2. Include it in your source files: `#include "GnomeEngine.h"`
-3. Link against OpenGL and GLFW in your build system
+```cpp
+InputHandler &input = InputHandler::get();
 
-## Controls
+// Keyboard
+input.isKeyDown(GLFW_KEY_A);       // true only on first frame pressed
+input.isKeyHeld(GLFW_KEY_A);       // true while held
+input.isKeyReleased(GLFW_KEY_A);   // true only on first frame released
+input.isKeyUp(GLFW_KEY_A);         // true while not pressed
 
-- **ESC** - Close the application
+// Mouse buttons (same state API)
+input.isMouseDown(GLFW_MOUSE_BUTTON_1);
+input.isMouseHeld(GLFW_MOUSE_BUTTON_1);
+input.isMouseReleased(GLFW_MOUSE_BUTTON_1);
 
-## Next Steps
+// Per-frame mouse movement delta
+double dx = input.mouseDeltaX;
+double dy = input.mouseDeltaY;
 
-- Shader management
-- Mesh and model loading
-- Texture management
-- Scene management
-- Input system
-- Audio system
-- Physics integration
-- And much more!
+// Cursor position
+double x = input.mouseX;
+double y = input.mouseY;
+
+// Scroll
+double scroll = input.scrollIndex;
+```
+
+---
+
+## Roadmap
+
+- [ ] Scene graph / hierarchy
+- [ ] Camera as a first-class component
+- [ ] Model/mesh loading (OBJ, glTF)
+- [ ] Custom shader support
+- [ ] Audio system
+- [ ] Physics integration
+- [ ] Lighting system

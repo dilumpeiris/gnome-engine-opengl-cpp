@@ -6,7 +6,6 @@
 #include "core/GnomeEngine.h"
 #include "InputHandler.h"
 #include "entities/GRectangle.h"
-#include "types.h"
 
 class Game : public Gnome::GnomeEngine {
   public:
@@ -20,7 +19,7 @@ class Game : public Gnome::GnomeEngine {
 		std::cout << "Working directory: " << cwd << std::endl;
 
 		// Initialize my_rect with position and size data.
-		my_rect = new GRect(0, 100, 512, 384);
+		my_rect = new GRect(0, 0, 512, 384);
 
 		// Add my_rect to the game object manager in Gnome.
 		Gnome::manager->addEntity(my_rect);
@@ -28,7 +27,6 @@ class Game : public Gnome::GnomeEngine {
 		// Add a texture to my_rect with the Material Component.
 		my_rect->material->addTexture("crate.jpg");
 	}
-
 	void Render() override {
 
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_A)) {

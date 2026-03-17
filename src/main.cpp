@@ -4,7 +4,7 @@
 
 // Not using this order give a redefinition error.
 #include "core/GnomeEngine.h"
-#include "InputHandler.h"
+#include "input/InputHandler.h"
 #include "entities/GRectangle.h"
 
 class Game : public Gnome::GnomeEngine {

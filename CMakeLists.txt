@@ -28,6 +28,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/engine/core
     ${CMAKE_SOURCE_DIR}/engine/ecs
     ${CMAKE_SOURCE_DIR}/engine/input
+    ${CMAKE_SOURCE_DIR}/engine/meshes
+    ${CMAKE_SOURCE_DIR}/engine/renderer
+    ${CMAKE_SOURCE_DIR}/engine/renderer/OpenGLRenderer
     ${CMAKE_SOURCE_DIR}/engine/components
     ${CMAKE_SOURCE_DIR}/engine/entities
     ${CMAKE_SOURCE_DIR}/vendor

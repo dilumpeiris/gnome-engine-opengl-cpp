@@ -22,7 +22,7 @@ class Game : public Gnome::GnomeEngine {
 		my_rect = new GRect(0, 0, 512, 384);
 
 		// Add my_rect to the game object manager in Gnome.
-		Gnome::manager->addEntity(my_rect);
+		this->addEntity(my_rect);
 
 		// Add a texture to my_rect with the Material Component.
 		my_rect->material->addTexture("crate.jpg");

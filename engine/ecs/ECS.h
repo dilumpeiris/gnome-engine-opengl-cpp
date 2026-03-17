@@ -11,6 +11,7 @@ class Component;
 
 using componentID = std::size_t;
 using systemID = std::size_t;
+using entityID = std::size_t;
 
 constexpr std::size_t maxComponents = 32;
 constexpr std::size_t maxSystems = 32;
@@ -28,6 +29,11 @@ inline componentID getComponentID() noexcept {
 
 inline systemID getSystemID() noexcept {
 	static systemID lastID = 0;
+	return lastID++;
+}
+
+inline entityID getNextEntityID() noexcept {
+	static entityID lastID = 0;
 	return lastID++;
 }
 
@@ -63,7 +69,8 @@ class Entity {
   public:
 	Manager *manager;
 
-	int tag;
+	entityID id; // unique, auto-assigned by Manager on addEntity()
+	int tag;     // user-defined tag
 
 	std::vector<std::unique_ptr<Component>> components;
 	componentArray componentArray;
@@ -115,14 +122,17 @@ class Manager {
 		for (auto &e : entities) {
 			e->init();
 		}
+		for (auto &s : systems) {
+			s->init();
+		}
 	}
 	void update() {
 		for (auto &e : entities) {
 			e->update();
 		}
-		// for (auto &s : systems) {
-		//     s->update();
-		// }
+		for (auto &s : systems) {
+			s->update();
+		}
 	}
 	void draw() {
 		for (auto &e : entities) {
@@ -130,16 +140,19 @@ class Manager {
 		}
 	}
 	Entity *addEntity(Entity *e) {
+		e->id = getNextEntityID();
 		std::unique_ptr<Entity> uPtr{e};
 		entities.emplace_back(std::move(uPtr));
 		return e;
 	}
-	Entity *addEntity(int entTag) {
+	Entity *addEntity(int entTag = 0) {
 		Entity *e = new Entity(entTag);
+		e->id = getNextEntityID();
 		std::unique_ptr<Entity> uPtr{e};
 		entities.emplace_back(std::move(uPtr));
 		return e;
 	}
+
 	template <typename T, typename... TArgs> T &addSystem(TArgs &&...mArgs) {
 		T *s = new T(std::forward<TArgs>(mArgs)...);
 		s->manager = this;

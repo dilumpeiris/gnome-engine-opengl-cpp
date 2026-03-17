@@ -1,6 +1,7 @@
 #ifndef GNOME_ENGINE_H
 #define GNOME_ENGINE_H
 
+#include "systems/RenderSystem.h"
 #include <iostream>
 #include <memory.h>
 
@@ -50,6 +51,9 @@ class GnomeEngine {
 	void Run();
 	void Shutdown();
 	virtual void Render() {};
+
+	// Management
+	void addEntity(Entity *entity);
 
 	// Getters
 	bool IsRunning() const { return m_running; }
@@ -142,6 +146,7 @@ inline bool GnomeEngine::Initialize(int width, int height, const std::string &ti
 
 	std::cout << "GnomeEngine initialized successfully!" << std::endl;
 	manager = new Manager();
+	manager->addSystem<RenderSystem>();
 	return true;
 }
 
@@ -153,6 +158,10 @@ inline void GnomeEngine::Run() {
 	}
 
 	auto lastTime = std::chrono::high_resolution_clock::now();
+
+	// Intialize Manager here after all the entites and their components have been added.
+	// Seems Backward. But that's how it is. Deal with it.
+	manager->init();
 
 	// Main game loop.
 	while (!glfwWindowShouldClose(m_window) && m_running) {
@@ -245,6 +254,8 @@ inline void GnomeEngine::Update(float deltaTime) {
 	// For now, just store the delta time
 	m_lastFrameTime = deltaTime;
 }
+
+inline void GnomeEngine::addEntity(Entity *entity) { manager->addEntity(entity); }
 
 inline void GnomeEngine::ProcessInput() {
 

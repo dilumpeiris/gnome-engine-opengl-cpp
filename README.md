@@ -60,6 +60,7 @@ int main() {
 	return 0;
 }
 ```
+![Screen Recording 2026-03-17 at 13 28 04](https://github.com/user-attachments/assets/aedefd3f-b515-4927-8bef-257776f39545)
 
 ---
 

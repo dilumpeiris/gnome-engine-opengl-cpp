@@ -62,7 +62,6 @@ class Shader : public Component {
 		)";
 
 		useShaders(vertexSrc, fragmentSrc);
-		std::cout << "shading";
 	}
 	void useShaders(const char *vertexShaderSrc, const char *fragmentShaderSrc) {
 

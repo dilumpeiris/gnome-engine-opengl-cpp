@@ -1,8 +1,12 @@
 #include <iostream>
 #include <unistd.h>
+#include <cmath>
 
-#include "GnomeEngine.h"
-#include "GRectangle.h"
+// Not using this order give a redefinition error.
+#include "core/GnomeEngine.h"
+#include "InputHandler.h"
+#include "entities/GRectangle.h"
+#include "types.h"
 
 class Game : public Gnome::GnomeEngine {
   public:
@@ -18,19 +22,42 @@ class Game : public Gnome::GnomeEngine {
 		// Initialize my_rect with position and size data.
 		my_rect = new GRect(0, 100, 512, 384);
 
-		std::cout << "my_rect created" << std::endl;
-
 		// Add my_rect to the game object manager in Gnome.
 		Gnome::manager->addEntity(my_rect);
-
-		std::cout << "my_rect added to manager" << std::endl;
 
 		// Add a texture to my_rect with the Material Component.
 		my_rect->material->addTexture("crate.jpg");
 	}
 
-	void Render() override { my_rect->transform->translate(0.005f, 0.0f, 0.0f); }
+	void Render() override {
+
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_A)) {
+			my_rect->transform->translateAbsolute(-0.005f, 0.0f, 0.0f);
+		}
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_W)) {
+			my_rect->transform->translateAbsolute(0.0f, 0.005f, 0.0f);
+		}
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_S)) {
+			my_rect->transform->translateAbsolute(0.0f, -0.005f, 0.0f);
+		}
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_D)) {
+			my_rect->transform->translateAbsolute(0.005f, 0.0f, 0.0f);
+		}
+
+		if (InputHandler::get().isMouseHeld(GLFW_MOUSE_BUTTON_1)) {
+			double dx = InputHandler::get().mouseDeltaX;
+			double dy = InputHandler::get().mouseDeltaY;
+			if (dx != 0.0 || dy != 0.0) {
+				if (std::abs(dx) >= std::abs(dy)) {
+					my_rect->transform->rotateAbsolute(5.0f, 0.0f, dx, 0.0f);
+				} else {
+					my_rect->transform->rotateAbsolute(5.0f, dy, 0.0f, 0.0f);
+				}
+			}
+		}
+	}
 };
+
 int main() {
 	// Create engine instance
 	Game game = Game();

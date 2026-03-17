@@ -7,9 +7,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Transform.h"
-#include "Material.h"
-#include "Shader.h"
+#include "components/Transform.h"
+#include "components/Material.h"
+#include "components/Shader.h"
+#include "input/InputHandler.h"
 
 // =====================================================================================================
 // GRectangle
@@ -39,8 +40,8 @@ class GRect : public Entity {
 
 		float vertices[] = {
 		    // positions // colors // texture coords
-		    pos_x + size_x / 2.0f,
-		    pos_y + size_y / 2.0f,
+		    size_x / 2.0f,
+		    size_y / 2.0f,
 		    0.0f,
 		    1.0f,
 		    0.0f,
@@ -48,8 +49,8 @@ class GRect : public Entity {
 		    1.0f,
 		    1.0f, // top right
 
-		    pos_x + size_x / 2.0f,
-		    pos_y - size_y / 2.0f,
+		    size_x / 2.0f,
+		    -size_y / 2.0f,
 		    0.0f,
 		    0.0f,
 		    1.0f,
@@ -57,8 +58,8 @@ class GRect : public Entity {
 		    1.0f,
 		    0.0f, // bottom right
 
-		    pos_x - size_x / 2.0f,
-		    pos_y - size_y / 2.0f,
+		    -size_x / 2.0f,
+		    -size_y / 2.0f,
 		    0.0f,
 		    0.0f,
 		    0.0f,
@@ -66,8 +67,8 @@ class GRect : public Entity {
 		    0.0f,
 		    0.0f, // bottom left
 
-		    pos_x - size_x / 2.0f,
-		    pos_y + size_y / 2.0f,
+		    -size_x / 2.0f,
+		    size_y / 2.0f,
 		    0.0f,
 		    1.0f,
 		    1.0f,
@@ -118,6 +119,7 @@ class GRect : public Entity {
 		material = this->getComponent<Material>();
 		shader = this->getComponent<Shader>();
 
+		transform->translate(pos_x, pos_y, 0.0f);
 		material->setShaderTextures(shader->ID);
 	}
 
@@ -132,5 +134,9 @@ class GRect : public Entity {
 		glUniform1i(glGetUniformLocation(shader->ID, "frameIndex"), 0);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
+
+		if (InputHandler::get().isKeyDown(GLFW_KEY_SPACE)) {
+			std::cout << "Space key pressed" << std::endl;
+		}
 	}
 };

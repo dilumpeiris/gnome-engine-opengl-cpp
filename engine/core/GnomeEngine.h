@@ -20,6 +20,8 @@
 #include <stb_image.h>
 
 #include "ECS.h"
+#include "InputHandler.h"
+#include "types.h"
 
 namespace Gnome {
 
@@ -119,6 +121,9 @@ inline bool GnomeEngine::Initialize(int width, int height, const std::string &ti
 		return false;
 	}
 
+	// Set Input Handler
+	InputHandler::get().init(m_window);
+
 	// Set initial viewport size
 	// This should be run after initializing GLAD as the function pointers will be
 	// null and can cause unpredictable behaviour otherwise
@@ -160,6 +165,7 @@ inline void GnomeEngine::Run() {
 
 		// Process input
 		ProcessInput();
+		glfwPollEvents();
 
 		// Update game logic
 		Update(deltaTime);
@@ -171,7 +177,6 @@ inline void GnomeEngine::Run() {
 
 		// Swap buffers and poll events
 		glfwSwapBuffers(m_window);
-		glfwPollEvents();
 	}
 }
 
@@ -234,6 +239,7 @@ inline bool GnomeEngine::InitializeOpenGL() {
 }
 
 inline void GnomeEngine::Update(float deltaTime) {
+	InputHandler::get().update();
 
 	// Update game logic here
 	// For now, just store the delta time

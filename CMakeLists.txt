@@ -23,7 +23,16 @@ set(SOURCES src/main.cpp src/glad.c)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Add include directories
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE 
+    ${CMAKE_SOURCE_DIR}/engine
+    ${CMAKE_SOURCE_DIR}/engine/core
+    ${CMAKE_SOURCE_DIR}/engine/ecs
+    ${CMAKE_SOURCE_DIR}/engine/input
+    ${CMAKE_SOURCE_DIR}/engine/components
+    ${CMAKE_SOURCE_DIR}/engine/entities
+    ${CMAKE_SOURCE_DIR}/vendor
+    ${CMAKE_SOURCE_DIR}/vendor/glad
+)
 
 # Explicitly set C++ standard library paths for LSP
 if(APPLE)

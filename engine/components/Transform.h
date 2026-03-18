@@ -33,10 +33,9 @@ class Transform : public Component {
 	unsigned int shader_projection;
 
   public:
-	Transform(unsigned int shaderID) {
-
+	Transform() {}
+	void setShader(unsigned int shaderID) {
 		this->shaderID = shaderID;
-
 		shader_model = glGetUniformLocation(shaderID, "model");
 		shader_view = glGetUniformLocation(shaderID, "view");
 		shader_projection = glGetUniformLocation(shaderID, "projection");

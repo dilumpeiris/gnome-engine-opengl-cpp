@@ -1,5 +1,5 @@
 #pragma once
-#include "renderer/Renderer.h"
+#include "renderer/GPUMesh.h"
 #include <unordered_map>
 
 #include <glad/glad.h>
@@ -14,7 +14,7 @@ struct OpenGLObject {
 	unsigned int EBO;
 };
 
-class OpenGLRenderer : public Renderer {
+class OpenGLMesh : public GPUMesh {
   private:
 	std::unordered_map<std::size_t, OpenGLObject> objects;
 

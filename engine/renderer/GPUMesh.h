@@ -1,7 +1,7 @@
 #pragma once
 #include <cstddef>
 
-class Renderer {
+class GPUMesh {
   public:
 	virtual void init() = 0;
 

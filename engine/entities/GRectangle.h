@@ -27,14 +27,13 @@ class GRect : public Entity {
 	GRect(int x, int y, int width, int height) : Entity(0) {
 
 		this->addComponent<Shader>();
-		this->addComponent<Transform>(this->getComponent<Shader>()->ID);
+		this->addComponent<Transform>();
 		this->addComponent<Material>();
 		this->addComponent<Mesh>();
 
 		transform = this->getComponent<Transform>();
 		material = this->getComponent<Material>();
 		shader = this->getComponent<Shader>();
-		material->setShaderTextures(shader->ID);
 	}
 
 	void draw() override {

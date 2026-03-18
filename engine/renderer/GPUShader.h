@@ -9,5 +9,7 @@ class GPUShader {
 	virtual void addShader(std::size_t entityID, const char *vertexShaderSrc,
 	                       const char *fragmentShaderSrc) = 0;
 	virtual unsigned int getShaderID(std::size_t entityID) = 0;
+	virtual void setShaderData(std::size_t entityID, char *variable, float data) = 0;
+
 	virtual ~GPUShader() = default;
 };

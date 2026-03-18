@@ -1,10 +1,8 @@
 #pragma once
 
-#include "renderer/GPUShader.h"
-#include <iostream>
 #include <unordered_map>
-
 #include <glad/glad.h>
+#include "renderer/GPUShader.h"
 
 struct OpenGLShaderData {
 	unsigned int ID;
@@ -43,7 +41,13 @@ class OpenGLShader : public GPUShader {
 		glDeleteShader(vertex_shader);
 		glDeleteShader(fragment_shader);
 	}
+
 	unsigned int getShaderID(std::size_t entityID) override { return shaders[entityID].ID; }
+
+	// Maybe use a template here.
+	void setShaderData(std::size_t entityID, char *variable, float data) override {
+		glUniform1f(glGetUniformLocation(shaders[entityID].ID, variable), data);
+	}
 
 	~OpenGLShader() override = default;
 };

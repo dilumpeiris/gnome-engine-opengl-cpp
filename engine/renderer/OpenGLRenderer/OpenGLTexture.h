@@ -95,6 +95,7 @@ class OpenGLTexture : public GPUTexture {
 		}
 	}
 
+	// This is unrelated to Textures, maybe move this to Shader.
 	void setShaderTextures(std::size_t entityID, unsigned int shaderID) override {
 		glUniform1i(glGetUniformLocation(shaderID, "spriteArray"), 0);
 	}

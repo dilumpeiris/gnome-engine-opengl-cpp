@@ -1,9 +1,11 @@
 #pragma once
+#include "ecs/ECS.h"
+
 #include "components/Mesh.h"
 #include "components/Material.h"
 #include "components/Shader.h"
 #include "components/Transform.h"
-#include "ecs/ECS.h"
+
 #include "renderer/OpenGLRenderer/OpenGLMesh.h"
 #include "renderer/OpenGLRenderer/OpenGLShader.h"
 #include "renderer/OpenGLRenderer/OpenGLTexture.h"
@@ -15,6 +17,7 @@ class RenderSystem : public System {
 	GPUTexture *gpuTexture;
 
 	void init() override {
+
 		gpuMesh = new OpenGLMesh();
 		gpuMesh->init();
 		gpuShader = new OpenGLShader();
@@ -23,6 +26,7 @@ class RenderSystem : public System {
 		gpuTexture->init();
 
 		for (auto &entity : this->manager->entities) {
+
 			Transform *transform = entity->getComponent<Transform>();
 			Material *material = entity->getComponent<Material>();
 			Shader *shader = entity->getComponent<Shader>();
@@ -38,6 +42,7 @@ class RenderSystem : public System {
 			gpuTexture->setShaderTextures(entity->id, gpuShader->getShaderID(entity->id));
 		}
 	}
+
 	void update() override {
 		for (auto &entity : this->manager->entities) {
 

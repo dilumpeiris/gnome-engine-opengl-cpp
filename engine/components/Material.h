@@ -3,7 +3,15 @@
 
 // Texture struct later needs to be flushed out.
 struct MTexture {
-	const char *name;
+	unsigned int ID;
+	const char *filePath;
+	float transparency;
+};
+
+struct TextureArray {
+	unsigned int ID;
+	int currentTexLocation = 0;
+	std::vector<MTexture> textures;
 };
 
 // =====================================================================================================
@@ -19,7 +27,7 @@ class Material : public Component {
 
 	void addTexture(const char *filePath) {
 		MTexture text;
-		text.name = filePath;
+		text.filePath = filePath;
 		texture_items.emplace_back(text);
 	}
 };

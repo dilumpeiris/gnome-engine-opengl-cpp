@@ -31,9 +31,7 @@ class RenderSystem : public System {
 			gpuMesh->addEntity(entity->id, mesh->vertices, mesh->indices, mesh->verticesCount,
 			                   mesh->indicesCount);
 			gpuShader->addShader(entity->id, shader->vertexSrc, shader->fragmentSrc);
-			std::cout << "Reaches Here" << std::endl;
-			gpuTexture->addTexture(entity->id, material->texture_items[0].name);
-			std::cout << "Not Here" << std::endl;
+			gpuTexture->addTexture(entity->id, material->texture_items[0].filePath);
 
 			// This should not exist after delocating GPU logic in the components.
 			transform->setShader(gpuShader->getShaderID(entity->id));

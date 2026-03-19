@@ -1,12 +1,13 @@
 #pragma once
+
 #include "renderer/GPUMesh.h"
 #include <unordered_map>
 
 #include <glad/glad.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+// =====================================================================================================
+// OpenGLMesh Structs
+// =====================================================================================================
 
 struct OpenGLObject {
 	unsigned int VAO;

@@ -5,8 +5,12 @@
 #include <iostream>
 #include <unordered_map>
 
-// This should not be here!!
+// This should not be here!! Or maybe it should be.
 #include "files/FileHandler.h"
+
+// =====================================================================================================
+// OpenGLTexture Structs
+// =====================================================================================================
 
 struct Texture {
 	unsigned int ID;
@@ -14,9 +18,14 @@ struct Texture {
 	float transparency;
 };
 
+// =====================================================================================================
+// OpenGLTexture Class
+// =====================================================================================================
+
 class OpenGLTexture : public GPUTexture {
   private:
 	std::unordered_map<std::size_t, unsigned int> textures;
+
 	bool textureArrayInitialized = false;
 	int currentTexLocation = 0;
 

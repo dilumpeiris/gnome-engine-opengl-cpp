@@ -22,11 +22,13 @@
 
 #include "ECS.h"
 #include "InputHandler.h"
-#include "types.h"
 
 namespace Gnome {
 
 Manager *manager;
+
+// Every window function is tightly coupled with the GnomeEngine class.
+// TODO: Refactor this to be more abstract.
 
 // =====================================================================================================
 // GnomeEngine Class
@@ -86,9 +88,9 @@ class GnomeEngine {
 	float m_lastFrameTime;
 };
 
-// =================================
+// =====================================================================================================
 // GnomeEngine Implementation
-// =================================
+// =====================================================================================================
 
 inline GnomeEngine::GnomeEngine()
     : m_window(nullptr), m_running(false), m_windowWidth(800), m_windowHeight(600),

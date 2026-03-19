@@ -34,12 +34,15 @@ class RenderSystem : public System {
 
 			gpuMesh->addEntity(entity->id, mesh->vertices, mesh->indices, mesh->verticesCount,
 			                   mesh->indicesCount);
-			gpuShader->addShader(entity->id, shader->vertexSrc, shader->fragmentSrc);
-			gpuTexture->addTexture(entity->id, material->texture_items[0].filePath);
 
-			// This should not exist after delocating GPU logic in the components.
-			transform->setShader(gpuShader->getShaderID(entity->id));
+			gpuShader->addShader(entity->id, shader->vertexSrc, shader->fragmentSrc);
+
+			gpuTexture->addTexture(entity->id, material->texture_items[0].filePath);
 			gpuTexture->setShaderTextures(entity->id, gpuShader->getShaderID(entity->id));
+
+			gpuShader->addShaderVariable(entity->id, "model");
+			gpuShader->addShaderVariable(entity->id, "view");
+			gpuShader->addShaderVariable(entity->id, "projection");
 		}
 	}
 
@@ -49,6 +52,10 @@ class RenderSystem : public System {
 			Transform *transform = entity->getComponent<Transform>();
 			Material *material = entity->getComponent<Material>();
 			Shader *shader = entity->getComponent<Shader>();
+
+			gpuShader->setShaderMatrix(entity->id, "model", transform->model);
+			gpuShader->setShaderMatrix(entity->id, "view", transform->view);
+			gpuShader->setShaderMatrix(entity->id, "projection", transform->projection);
 
 			gpuShader->use(entity->id);
 			gpuTexture->use(entity->id);

@@ -1,7 +1,10 @@
 #pragma once
-#include "GRectangleMesh.h"
 #include "ecs/ECS.h"
+#include "meshes/GRectangleMesh.h"
 
+// =====================================================================================================
+// Mesh Component
+// =====================================================================================================
 class Mesh : public Component {
   public:
 	bool collide;
@@ -27,5 +30,4 @@ class Mesh : public Component {
 	bool getVisible() { return visible; }
 
 	void setShape(float *vertices, int *indices, int verticesCount, int indicesCount);
-	void loadShapeFromFile(const std::string &filename);
 };

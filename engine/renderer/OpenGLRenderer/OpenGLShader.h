@@ -4,11 +4,22 @@
 #include <glad/glad.h>
 #include "renderer/GPUShader.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
+// =====================================================================================================
+// OpenGLShader Structs
+// =====================================================================================================
+
 struct OpenGLShaderData {
 	unsigned int ID;
 	const char *vertexShaderSrc;
 	const char *fragmentShaderSrc;
+	std::unordered_map<const char *, unsigned int> variables;
 };
+
+// =====================================================================================================
+// OpenGLShader Class
+// =====================================================================================================
 
 class OpenGLShader : public GPUShader {
   private:
@@ -44,9 +55,22 @@ class OpenGLShader : public GPUShader {
 
 	unsigned int getShaderID(std::size_t entityID) override { return shaders[entityID].ID; }
 
-	// Maybe use a template here.
-	void setShaderData(std::size_t entityID, char *variable, float data) override {
-		glUniform1f(glGetUniformLocation(shaders[entityID].ID, variable), data);
+	void addShaderVariable(std::size_t entityID, const char *variable) override {
+		shaders[entityID].variables[variable] =
+		    glGetUniformLocation(shaders[entityID].ID, variable);
+	}
+
+	void setShaderData(std::size_t entityID, const char *variable, float data) override {
+		glUniform1f(shaders[entityID].variables[variable], data);
+	}
+
+	void setShaderData(std::size_t entityID, const char *variable, int data) override {
+		glUniform1i(shaders[entityID].variables[variable], data);
+	}
+
+	void setShaderMatrix(std::size_t entityID, const char *variable, glm::mat4 data) override {
+		glUniformMatrix4fv(shaders[entityID].variables[variable], 1, GL_FALSE,
+		                   glm::value_ptr(data));
 	}
 
 	~OpenGLShader() override = default;

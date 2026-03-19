@@ -21,6 +21,7 @@ class GRect : public Entity {
 	Transform *transform;
 	Shader *shader;
 	Material *material;
+	Mesh *mesh;
 
   public:
 	GRect() : GRect(0, 0, 0, 0) {}
@@ -34,6 +35,7 @@ class GRect : public Entity {
 		transform = this->getComponent<Transform>();
 		material = this->getComponent<Material>();
 		shader = this->getComponent<Shader>();
+		mesh = this->getComponent<Mesh>();
 	}
 
 	void draw() override {

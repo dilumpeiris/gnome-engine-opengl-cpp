@@ -1,10 +1,8 @@
 #pragma once
 #include "ecs/ECS.h"
-#include <iostream>
-#include <glad/glad.h>
 
-#include "shaders/GRectangle/Vertex.h"
 #include "shaders/GRectangle/Fragment.h"
+#include "shaders/GRectangle/Vertex.h"
 
 // =====================================================================================================
 // Shader Component

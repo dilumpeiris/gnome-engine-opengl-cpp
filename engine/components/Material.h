@@ -37,5 +37,17 @@ class Material : public Component {
 	int getTextureArrayLength() { return texture_items.size(); }
 
 	int getCurrentTextureLocation() { return currentTextureLocation; }
+
+	const char *getCurrentTextureName() { return texture_items[currentTextureLocation].name; }
+
 	void setCurrentTextureLocation(int location) { currentTextureLocation = location; }
+
+	void useTexture(const char *name) {
+		for (auto &img : texture_items) {
+			if (std::string(img.name) == name) {
+				currentTextureLocation = &img - &texture_items[0];
+				break;
+			}
+		}
+	}
 };

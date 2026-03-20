@@ -10,11 +10,12 @@ const char *fragmentSrc = R"(
                 in vec2 TexCoord;
         
                 uniform sampler2DArray spriteArray;
+                uniform sampler2D mainTexture;
 
                 uniform int frameIndex;
                 void main() {
         
-                FragColor = texture(spriteArray, vec3(TexCoord, frameIndex));
+                FragColor = texture(mainTexture, TexCoord);
                 }
             )";
 }

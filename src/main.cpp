@@ -17,7 +17,7 @@ class Game : public Gnome::GnomeEngine {
 	int maxAnimationFrames = 8;
 
 	float animationTimer = 0.0f;
-	float animationSpeedFPS = 12.0f; // Default animation speed
+	float animationSpeedFPS = 20.0f; // Default animation speed
 
   public:
 	void setAnimationSpeed(float fps) { animationSpeedFPS = fps; }
@@ -33,12 +33,7 @@ class Game : public Gnome::GnomeEngine {
 		// Add my_rect to the game object manager in Gnome.
 		this->addEntity(my_rect);
 
-		// for (int i = 1; i <= 8; i++) {
-		// 	my_rect->material->addTexture(
-		// 	    ("walking/walking-left-" + std::to_string(i) + ".png").c_str(),
-		// 	    ("walking-left-" + std::to_string(i)).c_str());
-		// }
-
+		// Crude walking cycle.
 		my_rect->material->addTexture("walking/walking-left-1.png", "walking-left-1");
 		my_rect->material->addTexture("walking/walking-left-2.png", "walking-left-2");
 		my_rect->material->addTexture("walking/walking-left-3.png", "walking-left-3");
@@ -48,24 +43,24 @@ class Game : public Gnome::GnomeEngine {
 		my_rect->material->addTexture("walking/walking-left-7.png", "walking-left-7");
 		my_rect->material->addTexture("walking/walking-left-8.png", "walking-left-8");
 
-		my_rect->material->setCurrentTextureLocation(0);
+		my_rect->material->useTexture("walking-left-1");
 
 		// Optionally set animation speed
-		setAnimationSpeed(10.0f);
+		setAnimationSpeed(20.0f);
 	}
 	void Render() override {
 
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_A)) {
-			my_rect->transform->translateAbsolute(-0.005f, 0.0f, 0.0f);
+			my_rect->transform->translateAbsolute(-0.05f, 0.0f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_W)) {
-			my_rect->transform->translateAbsolute(0.0f, 0.005f, 0.0f);
+			my_rect->transform->translateAbsolute(0.0f, 0.05f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_S)) {
-			my_rect->transform->translateAbsolute(0.0f, -0.005f, 0.0f);
+			my_rect->transform->translateAbsolute(0.0f, -0.05f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_D)) {
-			my_rect->transform->translateAbsolute(0.005f, 0.0f, 0.0f);
+			my_rect->transform->translateAbsolute(0.05f, 0.0f, 0.0f);
 		}
 
 		if (InputHandler::get().isMouseHeld(GLFW_MOUSE_BUTTON_1)) {
@@ -85,15 +80,12 @@ class Game : public Gnome::GnomeEngine {
 			animationTimer += getDeltaTime();
 			if (animationTimer >= 1.0f / animationSpeedFPS) {
 				currentAnimationFrame++;
-				if (currentAnimationFrame >= maxAnimationFrames) {
+				if (currentAnimationFrame >= 8) { // 8 frames total
 					currentAnimationFrame = 0;
 				}
 				my_rect->material->setCurrentTextureLocation(currentAnimationFrame);
 				animationTimer = 0.0f;
 			}
-		} else {
-			// Optional: Reset timer/frame when not pressing space
-			// animationTimer = 0.0f;
 		}
 	}
 };

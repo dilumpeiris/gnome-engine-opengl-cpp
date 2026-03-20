@@ -23,7 +23,6 @@ class RenderSystem : public System {
 		gpuShader = new OpenGLShader();
 		gpuShader->init();
 		gpuTexture = new OpenGLTexture();
-		gpuTexture->init();
 
 		for (auto &entity : this->manager->entities) {
 
@@ -32,20 +31,21 @@ class RenderSystem : public System {
 			Shader *shader = entity->getComponent<Shader>();
 			Mesh *mesh = entity->getComponent<Mesh>();
 
+			gpuTexture->init(entity->id);
+
 			gpuMesh->addEntity(entity->id, mesh->vertices, mesh->indices, mesh->verticesCount,
 			                   mesh->indicesCount);
 
 			gpuShader->addShader(entity->id, shader->vertexSrc, shader->fragmentSrc);
 
 			for (auto &texture : material->texture_items) {
-				gpuTexture->addTexture(entity->id, texture.filePath);
+				gpuTexture->addTexture(entity->id, texture.name, texture.filePath);
 			}
 
 			gpuShader->addShaderVariable(entity->id, "model");
 			gpuShader->addShaderVariable(entity->id, "view");
 			gpuShader->addShaderVariable(entity->id, "projection");
 
-			gpuShader->setShaderTextures(entity->id);
 			gpuShader->setActiveTexture(entity->id, material->getCurrentTextureLocation());
 		}
 	}
@@ -63,8 +63,13 @@ class RenderSystem : public System {
 
 			gpuShader->setActiveTexture(entity->id, material->getCurrentTextureLocation());
 
+			// Bind every texture to a slot.
+			gpuTexture->bind(entity->id);
+
+			// Move the mainTexture to the slot asked by the material.
+			gpuShader->setShaderTexture(entity->id, material->getCurrentTextureLocation());
+
 			gpuShader->use(entity->id);
-			gpuTexture->use(entity->id);
 			gpuMesh->draw(entity->id);
 		}
 	}

@@ -60,9 +60,14 @@ int main() {
 	return 0;
 }
 ```
-![Screen Recording 2026-03-17 at 13 28 04 (2)](https://github.com/user-attachments/assets/feed8220-b395-4e52-b241-ea1b07846ff8)
+![Sample Transform Animation](https://github.com/user-attachments/assets/feed8220-b395-4e52-b241-ea1b07846ff8)
 
 ---
+
+
+## Sample Animation Using Shader Textures
+
+![Sample Crude Walk Cycle](assets/github/sample_crude_animation.gif)
 
 ## What Is GnomeEngine?
 

@@ -15,6 +15,7 @@ struct OpenGLShaderData {
 	const char *vertexShaderSrc;
 	const char *fragmentShaderSrc;
 	std::unordered_map<const char *, unsigned int> variables;
+	int textureCount = 0;
 };
 
 // =====================================================================================================
@@ -73,13 +74,17 @@ class OpenGLShader : public GPUShader {
 		                   glm::value_ptr(data));
 	}
 
-	void setShaderTextures(std::size_t entityID) override {
-		glUniform1i(glGetUniformLocation(shaders[entityID].ID, "spriteArray"), 0);
+	void setShaderTexture(std::size_t entityID, int textureLocation) override {
+		glUniform1i(glGetUniformLocation(shaders[entityID].ID, "mainTexture"), textureLocation);
 	}
 
 	void setActiveTexture(std::size_t entityID, int textureLocation) override {
 		glUniform1i(glGetUniformLocation(shaders[entityID].ID, "frameIndex"), textureLocation);
 	}
 
-	~OpenGLShader() override = default;
+	~OpenGLShader() override {
+		for (auto &shader : shaders) {
+			glDeleteProgram(shader.second.ID);
+		}
+	}
 };

@@ -38,11 +38,11 @@ class RenderSystem : public System {
 			gpuShader->addShader(entity->id, shader->vertexSrc, shader->fragmentSrc);
 
 			gpuTexture->addTexture(entity->id, material->texture_items[0].filePath);
-			gpuTexture->setShaderTextures(entity->id, gpuShader->getShaderID(entity->id));
-
 			gpuShader->addShaderVariable(entity->id, "model");
 			gpuShader->addShaderVariable(entity->id, "view");
 			gpuShader->addShaderVariable(entity->id, "projection");
+
+			gpuShader->setShaderTextures(entity->id, gpuShader->getShaderID(entity->id));
 		}
 	}
 

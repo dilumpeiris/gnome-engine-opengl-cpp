@@ -1,6 +1,7 @@
 #ifndef GNOME_ENGINE_H
 #define GNOME_ENGINE_H
 
+#include "systems/RenderSystem.h"
 #include <iostream>
 #include <memory.h>
 
@@ -21,11 +22,13 @@
 
 #include "ECS.h"
 #include "InputHandler.h"
-#include "types.h"
 
 namespace Gnome {
 
 Manager *manager;
+
+// Every window function is tightly coupled with the GnomeEngine class.
+// TODO: Refactor this to be more abstract.
 
 // =====================================================================================================
 // GnomeEngine Class
@@ -51,9 +54,13 @@ class GnomeEngine {
 	void Shutdown();
 	virtual void Render() {};
 
+	// Management
+	void addEntity(Entity *entity);
+
 	// Getters
 	bool IsRunning() const { return m_running; }
 	GLFWwindow *GetWindow() const { return m_window; }
+	float getDeltaTime() const { return m_lastFrameTime; }
 
 	// Utility functions
 	unsigned int createShaderProgram();
@@ -82,9 +89,9 @@ class GnomeEngine {
 	float m_lastFrameTime;
 };
 
-// =================================
+// =====================================================================================================
 // GnomeEngine Implementation
-// =================================
+// =====================================================================================================
 
 inline GnomeEngine::GnomeEngine()
     : m_window(nullptr), m_running(false), m_windowWidth(800), m_windowHeight(600),
@@ -142,6 +149,7 @@ inline bool GnomeEngine::Initialize(int width, int height, const std::string &ti
 
 	std::cout << "GnomeEngine initialized successfully!" << std::endl;
 	manager = new Manager();
+	manager->addSystem<RenderSystem>();
 	return true;
 }
 
@@ -153,6 +161,10 @@ inline void GnomeEngine::Run() {
 	}
 
 	auto lastTime = std::chrono::high_resolution_clock::now();
+
+	// Intialize Manager here after all the entites and their components have been added.
+	// Seems Backward. But that's how it is. Deal with it.
+	manager->init();
 
 	// Main game loop.
 	while (!glfwWindowShouldClose(m_window) && m_running) {
@@ -225,9 +237,12 @@ inline bool GnomeEngine::InitializeWindow(int width, int height, const std::stri
 }
 
 inline bool GnomeEngine::InitializeOpenGL() {
-
 	// Enable depth testing
 	// glEnable(GL_DEPTH_TEST);
+
+	// Enable blending for transparency
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Set clear color (dark gray)
 	glClearColor(0.5, 0.2f, 0.3f, 1.0f);
@@ -245,6 +260,8 @@ inline void GnomeEngine::Update(float deltaTime) {
 	// For now, just store the delta time
 	m_lastFrameTime = deltaTime;
 }
+
+inline void GnomeEngine::addEntity(Entity *entity) { manager->addEntity(entity); }
 
 inline void GnomeEngine::ProcessInput() {
 

@@ -6,13 +6,22 @@
 #include "core/GnomeEngine.h"
 #include "input/InputHandler.h"
 #include "entities/GRectangle.h"
+#include <string>
 
 class Game : public Gnome::GnomeEngine {
   public:
 	// Create a Rectangle object using the prebuilt GRect Entity class.
 	GRect *my_rect;
 
+	int currentAnimationFrame = 0;
+	int maxAnimationFrames = 8;
+
+	float animationTimer = 0.0f;
+	float animationSpeedFPS = 20.0f; // Default animation speed
+
   public:
+	void setAnimationSpeed(float fps) { animationSpeedFPS = fps; }
+
 	void setup() {
 		char cwd[1024];
 		getcwd(cwd, sizeof(cwd));
@@ -22,35 +31,60 @@ class Game : public Gnome::GnomeEngine {
 		my_rect = new GRect(0, 0, 512, 384);
 
 		// Add my_rect to the game object manager in Gnome.
-		Gnome::manager->addEntity(my_rect);
+		this->addEntity(my_rect);
 
-		// Add a texture to my_rect with the Material Component.
-		my_rect->material->addTexture("crate.jpg");
+		// Crude walking cycle.
+		my_rect->material->addTexture("walking/walking-left-1.png", "walking-left-1");
+		my_rect->material->addTexture("walking/walking-left-2.png", "walking-left-2");
+		my_rect->material->addTexture("walking/walking-left-3.png", "walking-left-3");
+		my_rect->material->addTexture("walking/walking-left-4.png", "walking-left-4");
+		my_rect->material->addTexture("walking/walking-left-5.png", "walking-left-5");
+		my_rect->material->addTexture("walking/walking-left-6.png", "walking-left-6");
+		my_rect->material->addTexture("walking/walking-left-7.png", "walking-left-7");
+		my_rect->material->addTexture("walking/walking-left-8.png", "walking-left-8");
+
+		my_rect->material->useTexture("walking-left-1");
+
+		// Optionally set animation speed
+		setAnimationSpeed(20.0f);
 	}
 	void Render() override {
 
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_A)) {
-			my_rect->transform->translateAbsolute(-0.005f, 0.0f, 0.0f);
+			my_rect->transform->translateAbsolute(-0.05f, 0.0f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_W)) {
-			my_rect->transform->translateAbsolute(0.0f, 0.005f, 0.0f);
+			my_rect->transform->translateAbsolute(0.0f, 0.05f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_S)) {
-			my_rect->transform->translateAbsolute(0.0f, -0.005f, 0.0f);
+			my_rect->transform->translateAbsolute(0.0f, -0.05f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_D)) {
-			my_rect->transform->translateAbsolute(0.005f, 0.0f, 0.0f);
+			my_rect->transform->translateAbsolute(0.05f, 0.0f, 0.0f);
 		}
 
 		if (InputHandler::get().isMouseHeld(GLFW_MOUSE_BUTTON_1)) {
 			double dx = InputHandler::get().mouseDeltaX;
 			double dy = InputHandler::get().mouseDeltaY;
+
 			if (dx != 0.0 || dy != 0.0) {
 				if (std::abs(dx) >= std::abs(dy)) {
 					my_rect->transform->rotateAbsolute(5.0f, 0.0f, dx, 0.0f);
 				} else {
 					my_rect->transform->rotateAbsolute(5.0f, dy, 0.0f, 0.0f);
 				}
+			}
+		}
+
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_SPACE)) {
+			animationTimer += getDeltaTime();
+			if (animationTimer >= 1.0f / animationSpeedFPS) {
+				currentAnimationFrame++;
+				if (currentAnimationFrame >= 8) { // 8 frames total
+					currentAnimationFrame = 0;
+				}
+				my_rect->material->setCurrentTextureLocation(currentAnimationFrame);
+				animationTimer = 0.0f;
 			}
 		}
 	}

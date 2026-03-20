@@ -9,26 +9,15 @@
 #include "files/FileHandler.h"
 
 // =====================================================================================================
-// OpenGLTexture Structs
-// =====================================================================================================
-
-struct Texture {
-	unsigned int ID;
-	const char *name;
-	float transparency;
-};
-
-// =====================================================================================================
 // OpenGLTexture Class
 // =====================================================================================================
 
 class OpenGLTexture : public GPUTexture {
   private:
 	std::unordered_map<std::size_t, unsigned int> textures;
+	std::unordered_map<std::size_t, int> currentTextureLocations;
 
 	bool textureArrayInitialized = false;
-	int currentTexLocation = 0;
-
 	int arrayWidth = 0, arrayHeight = 0;
 
   public:
@@ -41,6 +30,8 @@ class OpenGLTexture : public GPUTexture {
 
 		glGenTextures(1, &textures[entityID]);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, textures[entityID]);
+
+		currentTextureLocations[entityID] = 0;
 
 		// Set texture parameters for ARRAY target (FIXED)
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -67,7 +58,8 @@ class OpenGLTexture : public GPUTexture {
 			return;
 		}
 
-		// Initialize texture array on first texture
+		// Move this logic to init().
+		// Initialize texture array on first texture.
 		if (!textureArrayInitialized) {
 			initializeTextureArray(entityID, width, height, 16); // Support up to 16 layers
 			textureArrayInitialized = true;
@@ -92,10 +84,11 @@ class OpenGLTexture : public GPUTexture {
 
 		// Add texture to array layer
 		glBindTexture(GL_TEXTURE_2D_ARRAY, textures[entityID]);
-		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, currentTexLocation, // x, y, layer
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0,
+		                currentTextureLocations[entityID], // x, y, layer
 		                width, height, 1, format, GL_UNSIGNED_BYTE, finalData);
 
-		currentTexLocation++;
+		currentTextureLocations[entityID]++;
 
 		if (finalData != data) {
 			delete[] finalData;
@@ -104,8 +97,5 @@ class OpenGLTexture : public GPUTexture {
 		}
 	}
 
-	void use(std::size_t entityID) override {
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D_ARRAY, textures[entityID]);
-	}
+	void use(std::size_t entityID) override { glActiveTexture(GL_TEXTURE0); }
 };

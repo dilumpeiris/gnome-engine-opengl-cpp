@@ -15,6 +15,7 @@ class GPUShader {
 	virtual void setShaderData(std::size_t entityID, const char *variable, float data) = 0;
 	virtual void setShaderData(std::size_t entityID, const char *variable, int data) = 0;
 	virtual void setShaderMatrix(std::size_t entityID, const char *variable, glm::mat4 data) = 0;
-	virtual void setShaderTextures(std::size_t entityID, unsigned int shaderID) = 0;
+	virtual void setShaderTextures(std::size_t entityID) = 0;
+	virtual void setActiveTexture(std::size_t entityID, int textureLocation) = 0;
 	virtual ~GPUShader() = default;
 };

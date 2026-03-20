@@ -37,12 +37,16 @@ class RenderSystem : public System {
 
 			gpuShader->addShader(entity->id, shader->vertexSrc, shader->fragmentSrc);
 
-			gpuTexture->addTexture(entity->id, material->texture_items[0].filePath);
+			for (auto &texture : material->texture_items) {
+				gpuTexture->addTexture(entity->id, texture.filePath);
+			}
+
 			gpuShader->addShaderVariable(entity->id, "model");
 			gpuShader->addShaderVariable(entity->id, "view");
 			gpuShader->addShaderVariable(entity->id, "projection");
 
-			gpuShader->setShaderTextures(entity->id, gpuShader->getShaderID(entity->id));
+			gpuShader->setShaderTextures(entity->id);
+			gpuShader->setActiveTexture(entity->id, material->getCurrentTextureLocation());
 		}
 	}
 
@@ -56,6 +60,8 @@ class RenderSystem : public System {
 			gpuShader->setShaderMatrix(entity->id, "model", transform->model);
 			gpuShader->setShaderMatrix(entity->id, "view", transform->view);
 			gpuShader->setShaderMatrix(entity->id, "projection", transform->projection);
+
+			gpuShader->setActiveTexture(entity->id, material->getCurrentTextureLocation());
 
 			gpuShader->use(entity->id);
 			gpuTexture->use(entity->id);

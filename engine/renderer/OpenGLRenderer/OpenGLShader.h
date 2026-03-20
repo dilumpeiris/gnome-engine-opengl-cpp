@@ -73,8 +73,12 @@ class OpenGLShader : public GPUShader {
 		                   glm::value_ptr(data));
 	}
 
-	void setShaderTextures(std::size_t entityID, unsigned int shaderID) override {
-		glUniform1i(glGetUniformLocation(shaderID, "spriteArray"), 0);
+	void setShaderTextures(std::size_t entityID) override {
+		glUniform1i(glGetUniformLocation(shaders[entityID].ID, "spriteArray"), 0);
+	}
+
+	void setActiveTexture(std::size_t entityID, int textureLocation) override {
+		glUniform1i(glGetUniformLocation(shaders[entityID].ID, "frameIndex"), textureLocation);
 	}
 
 	~OpenGLShader() override = default;

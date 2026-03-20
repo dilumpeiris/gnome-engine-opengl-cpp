@@ -38,10 +38,5 @@ class GRect : public Entity {
 		mesh = this->getComponent<Mesh>();
 	}
 
-	void draw() override {
-
-		if (InputHandler::get().isKeyDown(GLFW_KEY_SPACE)) {
-			std::cout << "Space key pressed" << std::endl;
-		}
-	}
+	void draw() override {}
 };

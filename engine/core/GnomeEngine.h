@@ -60,6 +60,7 @@ class GnomeEngine {
 	// Getters
 	bool IsRunning() const { return m_running; }
 	GLFWwindow *GetWindow() const { return m_window; }
+	float getDeltaTime() const { return m_lastFrameTime; }
 
 	// Utility functions
 	unsigned int createShaderProgram();
@@ -236,9 +237,12 @@ inline bool GnomeEngine::InitializeWindow(int width, int height, const std::stri
 }
 
 inline bool GnomeEngine::InitializeOpenGL() {
-
 	// Enable depth testing
 	// glEnable(GL_DEPTH_TEST);
+
+	// Enable blending for transparency
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Set clear color (dark gray)
 	glClearColor(0.5, 0.2f, 0.3f, 1.0f);

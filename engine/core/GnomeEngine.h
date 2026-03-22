@@ -1,7 +1,6 @@
 #ifndef GNOME_ENGINE_H
 #define GNOME_ENGINE_H
 
-#include "systems/RenderSystem.h"
 #include <iostream>
 #include <memory.h>
 
@@ -16,12 +15,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <chrono>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 #include "ECS.h"
 #include "InputHandler.h"
+#include "GnomeTime.h"
+#include "systems/AnimationSystem.h"
+#include "systems/RenderSystem.h"
 
 namespace Gnome {
 
@@ -60,7 +61,7 @@ class GnomeEngine {
 	// Getters
 	bool IsRunning() const { return m_running; }
 	GLFWwindow *GetWindow() const { return m_window; }
-	float getDeltaTime() const { return m_lastFrameTime; }
+	float getDeltaTime() const { return GnomeTime::getDeltaTime(); }
 
 	// Utility functions
 	unsigned int createShaderProgram();
@@ -84,9 +85,6 @@ class GnomeEngine {
 	int m_windowHeight;
 
 	std::string m_windowTitle;
-
-	// Timing
-	float m_lastFrameTime;
 };
 
 // =====================================================================================================
@@ -95,7 +93,7 @@ class GnomeEngine {
 
 inline GnomeEngine::GnomeEngine()
     : m_window(nullptr), m_running(false), m_windowWidth(800), m_windowHeight(600),
-      m_windowTitle("GnomeEngine"), m_lastFrameTime(0.0f) {}
+      m_windowTitle("GnomeEngine") {}
 
 inline GnomeEngine::~GnomeEngine() { Shutdown(); }
 
@@ -150,6 +148,7 @@ inline bool GnomeEngine::Initialize(int width, int height, const std::string &ti
 	std::cout << "GnomeEngine initialized successfully!" << std::endl;
 	manager = new Manager();
 	manager->addSystem<RenderSystem>();
+	manager->addSystem<AnimationSystem>();
 	return true;
 }
 
@@ -160,29 +159,24 @@ inline void GnomeEngine::Run() {
 		return;
 	}
 
-	auto lastTime = std::chrono::high_resolution_clock::now();
-
 	// Intialize Manager here after all the entites and their components have been added.
 	// Seems Backward. But that's how it is. Deal with it.
 	manager->init();
-
+	GnomeTime::init();
 	// Main game loop.
 	while (!glfwWindowShouldClose(m_window) && m_running) {
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		// Calculate delta time
-		auto currentTime = std::chrono::high_resolution_clock::now();
-		float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
-		lastTime = currentTime;
 
 		// Process input
 		ProcessInput();
 		glfwPollEvents();
 
 		// Update game logic
-		Update(deltaTime);
+		Update(GnomeTime::getDeltaTime());
 
 		Render();
+
+		GnomeTime::update();
 
 		manager->update();
 		manager->draw();
@@ -257,8 +251,6 @@ inline void GnomeEngine::Update(float deltaTime) {
 	InputHandler::get().update();
 
 	// Update game logic here
-	// For now, just store the delta time
-	m_lastFrameTime = deltaTime;
 }
 
 inline void GnomeEngine::addEntity(Entity *entity) { manager->addEntity(entity); }

@@ -12,10 +12,15 @@ const char *fragmentSrc = R"(
                 uniform sampler2DArray spriteArray;
                 uniform sampler2D mainTexture;
 
+                uniform int isAnimated;
                 uniform int frameIndex;
+
                 void main() {
-        
-                FragColor = texture(mainTexture, TexCoord);
+                    if (isAnimated == 1) {
+                        FragColor = texture(spriteArray, vec3(TexCoord, float(frameIndex)));
+                    } else {
+                        FragColor = texture(mainTexture, TexCoord);
+                    }
                 }
             )";
 }

@@ -25,12 +25,11 @@ struct TextureImage {
 
 class OpenGLTexture : public GPUTexture {
   private:
-	std::unordered_map<std::size_t, unsigned int> textures;
 	std::unordered_map<std::size_t, std::vector<TextureImage>> textureImages;
 	std::unordered_map<std::size_t, int> currentTextureLocations;
 
-	bool textureArrayInitialized = false;
-	int arrayWidth = 0, arrayHeight = 0;
+	// Maybe this will help in runtime texture binding.
+	std::unordered_map<std::size_t, std::unordered_map<const char *, unsigned int>> textures;
 
   public:
 	OpenGLTexture() {}
@@ -107,13 +106,6 @@ class OpenGLTexture : public GPUTexture {
 		}
 
 		initializeTexture2D(entityID, name, filePath, width, height);
-
-		// // Check if dimensions match
-		// if (width != arrayWidth || height != arrayHeight) {
-		// 	std::cout << "Error: Texture dimensions don't match array dimensions" << std::endl;
-		// 	FileHandler::freeImage(data);
-		// 	return;
-		// }
 
 		// Convert data to consistent format (RGBA)
 		unsigned char *finalData = data;
@@ -220,23 +212,25 @@ class OpenGLTexture : public GPUTexture {
 		}
 	}
 
-	void use(std::size_t entityID, const char *name) override {
-		auto &images = textureImages[entityID];
-		int targetIndex = -1;
+	void use(std::size_t entityID, const char *name) override {}
 
-		for (int i = 0; i < images.size(); ++i) {
-			if (std::string(images[i].name) == name) {
-				targetIndex = i;
-				break;
-			}
+	const char *getTextureName(std::size_t entityID, int textureLocation) override {
+		// if (textureImages.count(entityID)) {
+		// 	for (auto &img : textureImages[entityID]) {
+		// 		// if (img.textureID == textureLocation) {
+		// 		// 	return img.name;
+		// 		// }
+		// 	}
+		// }
+		return "walking-left";
+	}
+
+	void printTextureNames(std::size_t entityID) override {
+		int location = 0;
+		for (auto &img : textureImages[entityID]) {
+			std::cout << "Texture Name: " << img.name << " at location: " << location
+			          << "layer count: " << img.currentLayer << std::endl;
+			location++;
 		}
-
-		if (targetIndex != -1 && targetIndex != 0) {
-			// Swap the target texture to the primary slot (index 0)
-			std::swap(images[0], images[targetIndex]);
-		}
-
-		// Re-bind all textures to reflect the potentially new order
-		bind(entityID);
 	}
 };

@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Animation.h"
 #include "components/Mesh.h"
 #include "components/Transform.h"
 #include "components/Material.h"
@@ -22,6 +23,7 @@ class GRect : public Entity {
 	Shader *shader;
 	Material *material;
 	Mesh *mesh;
+	Animation *animation;
 
   public:
 	GRect() : GRect(0, 0, 0, 0) {}
@@ -31,11 +33,13 @@ class GRect : public Entity {
 		this->addComponent<Transform>();
 		this->addComponent<Material>();
 		this->addComponent<Mesh>();
+		this->addComponent<Animation>();
 
 		transform = this->getComponent<Transform>();
 		material = this->getComponent<Material>();
 		shader = this->getComponent<Shader>();
 		mesh = this->getComponent<Mesh>();
+		animation = this->getComponent<Animation>();
 	}
 
 	void draw() override {}

@@ -17,7 +17,7 @@ find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 
 # Add source files (only main.cpp since GnomeEngine is header-only)
-set(SOURCES src/main.cpp src/glad.c)
+set(SOURCES src/main.cpp src/glad.c engine/core/GnomeTime.cpp)
 
 # Create executable
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -28,6 +28,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/engine/core
     ${CMAKE_SOURCE_DIR}/engine/ecs
     ${CMAKE_SOURCE_DIR}/engine/input
+    ${CMAKE_SOURCE_DIR}/engine/time
     ${CMAKE_SOURCE_DIR}/engine/meshes
     ${CMAKE_SOURCE_DIR}/engine/renderer
     ${CMAKE_SOURCE_DIR}/engine/renderer/OpenGLRenderer

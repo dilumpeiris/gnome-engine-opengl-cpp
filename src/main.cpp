@@ -33,17 +33,22 @@ class Game : public Gnome::GnomeEngine {
 		// Add my_rect to the game object manager in Gnome.
 		this->addEntity(my_rect);
 
-		// Crude walking cycle.
-		my_rect->material->addTexture("walking/walking-left-1.png", "walking-left-1");
-		my_rect->material->addTexture("walking/walking-left-2.png", "walking-left-2");
-		my_rect->material->addTexture("walking/walking-left-3.png", "walking-left-3");
-		my_rect->material->addTexture("walking/walking-left-4.png", "walking-left-4");
-		my_rect->material->addTexture("walking/walking-left-5.png", "walking-left-5");
-		my_rect->material->addTexture("walking/walking-left-6.png", "walking-left-6");
-		my_rect->material->addTexture("walking/walking-left-7.png", "walking-left-7");
-		my_rect->material->addTexture("walking/walking-left-8.png", "walking-left-8");
+		// my_rect->material->addTexture("walking/walking-left-1.png", "walking-left");
 
-		my_rect->material->useTexture("walking-left-1");
+		my_rect->animation->addAnimation("walking-left");
+
+		my_rect->animation->addFrame("walking-left", "walking/walking-left-1.png", 0);
+		my_rect->animation->addFrame("walking-left", "walking/walking-left-2.png", 1);
+		my_rect->animation->addFrame("walking-left", "walking/walking-left-3.png", 2);
+		my_rect->animation->addFrame("walking-left", "walking/walking-left-4.png", 3);
+		my_rect->animation->addFrame("walking-left", "walking/walking-left-5.png", 4);
+		my_rect->animation->addFrame("walking-left", "walking/walking-left-6.png", 5);
+		my_rect->animation->addFrame("walking-left", "walking/walking-left-7.png", 6);
+		my_rect->animation->addFrame("walking-left", "walking/walking-left-8.png", 7);
+
+		// my_rect->material->useTexture("walking-left");
+
+		my_rect->animation->playAnimation("walking-left");
 
 		// Optionally set animation speed
 		setAnimationSpeed(20.0f);
@@ -61,31 +66,6 @@ class Game : public Gnome::GnomeEngine {
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_D)) {
 			my_rect->transform->translateAbsolute(0.05f, 0.0f, 0.0f);
-		}
-
-		if (InputHandler::get().isMouseHeld(GLFW_MOUSE_BUTTON_1)) {
-			double dx = InputHandler::get().mouseDeltaX;
-			double dy = InputHandler::get().mouseDeltaY;
-
-			if (dx != 0.0 || dy != 0.0) {
-				if (std::abs(dx) >= std::abs(dy)) {
-					my_rect->transform->rotateAbsolute(5.0f, 0.0f, dx, 0.0f);
-				} else {
-					my_rect->transform->rotateAbsolute(5.0f, dy, 0.0f, 0.0f);
-				}
-			}
-		}
-
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_SPACE)) {
-			animationTimer += getDeltaTime();
-			if (animationTimer >= 1.0f / animationSpeedFPS) {
-				currentAnimationFrame++;
-				if (currentAnimationFrame >= 8) { // 8 frames total
-					currentAnimationFrame = 0;
-				}
-				my_rect->material->setCurrentTextureLocation(currentAnimationFrame);
-				animationTimer = 0.0f;
-			}
 		}
 	}
 };

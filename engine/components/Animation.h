@@ -1,7 +1,9 @@
 #pragma once
 #include "ecs/ECS.h"
-#include <unordered_map>
 
+// =====================================================================================================
+// Structs
+// =====================================================================================================
 struct AnimationFrame {
 	int frameIndex;
 	const char *filePath;
@@ -10,11 +12,15 @@ struct AnimationFrame {
 struct AnimationObject {
 	std::string name;
 	double frameDuration = 100;
+	// For now we keep the timer here but we should move it to a dedicated system.
 	float timer = 0.0f;
 	int currentFrameIndex = 0;
 	std::vector<AnimationFrame> frames;
 };
 
+// =====================================================================================================
+// Animation Component
+// =====================================================================================================
 class Animation : public Component {
 
   public:
@@ -26,9 +32,10 @@ class Animation : public Component {
   public:
 	void init() override {}
 
-	void addAnimation(std::string name) {
+	void addAnimation(std::string name, double frameDuration) {
 		AnimationObject anim;
 		anim.name = name;
+		anim.frameDuration = frameDuration;
 		animations.push_back(anim);
 	}
 
@@ -53,6 +60,8 @@ class Animation : public Component {
 			}
 		}
 	}
+
+	void stopAnimation() { isPlaying = false; }
 
 	void update() override {}
 };

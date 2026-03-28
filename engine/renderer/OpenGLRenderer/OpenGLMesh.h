@@ -13,6 +13,8 @@ struct OpenGLObject {
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int EBO;
+	int renderMode;
+	int indexCount;
 };
 
 class OpenGLMesh : public GPUMesh {
@@ -24,12 +26,12 @@ class OpenGLMesh : public GPUMesh {
 
 	void draw(std::size_t ID) override {
 		glBindVertexArray(objects[ID].VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(objects[ID].renderMode, objects[ID].indexCount, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 
-	void addEntity(std::size_t ID, float *vertices, int *indices, int vertexCount,
-	               int indexCount) override {
+	void addEntity(std::size_t ID, float *vertices, int *indices, int vertexCount, int indexCount,
+	               int renderMode) override {
 		unsigned int VAO;
 		unsigned int VBO;
 		unsigned int EBO;
@@ -63,6 +65,6 @@ class OpenGLMesh : public GPUMesh {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		objects[ID] = OpenGLObject{VAO, VBO, EBO};
+		objects[ID] = OpenGLObject{VAO, VBO, EBO, renderMode, indexCount};
 	}
 };

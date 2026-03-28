@@ -1,5 +1,6 @@
 #pragma once
 #include "ecs/ECS.h"
+#include <glm/glm.hpp>
 
 // =====================================================================================================
 // Structs
@@ -7,7 +8,6 @@
 
 // Texture struct later needs to be flushed out.
 struct Texture {
-	unsigned int ID;
 	const char *filePath;
 	const char *name;
 	float transparency;
@@ -21,6 +21,9 @@ class Material : public Component {
   public:
 	std::vector<Texture> texture_items;
 	int currentTextureLocation = 0;
+
+	bool hasColor = false;
+	glm::vec4 color{1.0f, 1.0f, 1.0f, 1.0f};
 
   public:
 	Material() {}
@@ -38,7 +41,10 @@ class Material : public Component {
 
 	int getCurrentTextureLocation() { return currentTextureLocation; }
 
-	const char *getCurrentTextureName() { return texture_items[currentTextureLocation].name; }
+	const char *getCurrentTextureName() {
+		if (texture_items.empty()) return "";
+		return texture_items[currentTextureLocation].name;
+	}
 
 	void setCurrentTextureLocation(int location) { currentTextureLocation = location; }
 

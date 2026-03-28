@@ -1,17 +1,18 @@
 #include <iostream>
 #include <unistd.h>
-#include <cmath>
 
 // Not using this order give a redefinition error.
 #include "core/GnomeEngine.h"
 #include "input/InputHandler.h"
 #include "entities/GRectangle.h"
+#include "entities/GLine.h"
 #include <string>
 
 class Game : public Gnome::GnomeEngine {
   public:
 	// Create a Rectangle object using the prebuilt GRect Entity class.
 	GRect *my_rect;
+	GLine *line;
 
 	int currentAnimationFrame = 0;
 	int maxAnimationFrames = 8;
@@ -28,14 +29,15 @@ class Game : public Gnome::GnomeEngine {
 		std::cout << "Working directory: " << cwd << std::endl;
 
 		// Initialize my_rect with position and size data.
-		my_rect = new GRect(0, 0, 512, 384);
+		my_rect = new GRect(0, 0, 100, 100);
 
 		// Add my_rect to the game object manager in Gnome.
 		this->addEntity(my_rect);
 
-		// my_rect->material->addTexture("walking/walking-left-1.png", "walking-left");
+		my_rect->material->addTexture("crate.jpg", "crate");
+		my_rect->setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-		my_rect->animation->addAnimation("walking-left");
+		my_rect->animation->addAnimation("walking-left", 50);
 
 		my_rect->animation->addFrame("walking-left", "walking/walking-left-1.png", 0);
 		my_rect->animation->addFrame("walking-left", "walking/walking-left-2.png", 1);
@@ -52,21 +54,39 @@ class Game : public Gnome::GnomeEngine {
 
 		// Optionally set animation speed
 		setAnimationSpeed(20.0f);
+
+		// Initialize line
+		line = new GLine();
+		this->addEntity(line);
+		line->setColor(0.0f, 1.0f, 0.0f, 1.0f); // Green line
 	}
 	void Render() override {
 
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_A)) {
-			my_rect->transform->translateAbsolute(-0.05f, 0.0f, 0.0f);
+			line->transform->translateAbsolute(-0.05f, 0.0f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_W)) {
-			my_rect->transform->translateAbsolute(0.0f, 0.05f, 0.0f);
+			line->transform->translateAbsolute(0.0f, 0.05f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_S)) {
-			my_rect->transform->translateAbsolute(0.0f, -0.05f, 0.0f);
+			line->transform->translateAbsolute(0.0f, -0.05f, 0.0f);
 		}
 		if (InputHandler::get().isKeyHeld(GLFW_KEY_D)) {
-			my_rect->transform->translateAbsolute(0.05f, 0.0f, 0.0f);
+			line->transform->translateAbsolute(0.05f, 0.0f, 0.0f);
 		}
+
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_LEFT)) {
+			line->transform->rotateAbsolute(2.0f, 0.0f, 0.0f, 1.0f);
+		}
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_RIGHT)) {
+			line->transform->rotateAbsolute(-2.0f, 0.0f, 0.0f, 1.0f);
+		}
+
+		// Endpoints for collision system
+		std::pair<glm::vec2, glm::vec2> endpoints = line->getLineEndpoints();
+		// std::cout << "Line points: (" << endpoints.first.x << ", " << endpoints.first.y << ") to
+		// ("
+		//           << endpoints.second.x << ", " << endpoints.second.y << ")" << std::endl;
 	}
 };
 

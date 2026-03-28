@@ -14,9 +14,13 @@ const char *fragmentSrc = R"(
 
                 uniform int isAnimated;
                 uniform int frameIndex;
+                uniform int hasColor;
+                uniform vec4 solidColor;
 
                 void main() {
-                    if (isAnimated == 1) {
+                    if (hasColor == 1) {
+                        FragColor = solidColor;
+                    } else if (isAnimated == 1) {
                         FragColor = texture(spriteArray, vec3(TexCoord, float(frameIndex)));
                     } else {
                         FragColor = texture(mainTexture, TexCoord);

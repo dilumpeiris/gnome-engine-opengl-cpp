@@ -199,6 +199,7 @@ class OpenGLTexture : public GPUTexture {
 		return -1;
 	}
 
+	// Refactor thiss to use 0-8 2d texture slots and 9-16 3d texture slots
 	void bind(std::size_t entityID) override {
 		int location = 0;
 		for (auto &img : textureImages[entityID]) {
@@ -212,7 +213,19 @@ class OpenGLTexture : public GPUTexture {
 		}
 	}
 
-	void use(std::size_t entityID, const char *name) override {}
+	void use(std::size_t entityID, const char *name) override {
+		for (auto &img : textureImages[entityID]) {
+			if (std::string(img.name) == name) {
+				if (img.textureType == TextureType::Array2D) {
+					glActiveTexture(GL_TEXTURE0 + 1);
+					glBindTexture(GL_TEXTURE_2D_ARRAY, img.textureID);
+				} else if (img.textureType == TextureType::Standard2D) {
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, img.textureID);
+				}
+			}
+		}
+	}
 
 	const char *getTextureName(std::size_t entityID, int textureLocation) override {
 		// if (textureImages.count(entityID)) {

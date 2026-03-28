@@ -79,6 +79,10 @@ class OpenGLShader : public GPUShader {
 		                   glm::value_ptr(data));
 	}
 
+	void setShaderVector(std::size_t entityID, std::string variable, glm::vec4 data) override {
+		glUniform4fv(shaders[entityID].variables[variable], 1, glm::value_ptr(data));
+	}
+
 	void setShaderTexture(std::size_t entityID, std::string name, int textureLocation) override {
 		glUniform1i(glGetUniformLocation(shaders[entityID].ID, name.c_str()), textureLocation);
 	}

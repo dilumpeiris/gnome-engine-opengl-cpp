@@ -19,7 +19,6 @@ class RenderSystem : public System {
 	GPUTexture *gpuTexture;
 
 	void init() override {
-
 		gpuMesh = new OpenGLMesh();
 		gpuMesh->init();
 		gpuShader = new OpenGLShader();
@@ -32,21 +31,24 @@ class RenderSystem : public System {
 			Material *material = entity->getComponent<Material>();
 			Shader *shader = entity->getComponent<Shader>();
 			Mesh *mesh = entity->getComponent<Mesh>();
+			Animation *animation = entity->getComponent<Animation>();
 
 			gpuTexture->init(entity->id);
 
 			gpuMesh->addEntity(entity->id, mesh->vertices, mesh->indices, mesh->verticesCount,
-			                   mesh->indicesCount);
+			                   mesh->indicesCount, mesh->renderMode);
 
 			gpuShader->addShader(entity->id, shader->vertexSrc, shader->fragmentSrc);
 
-			// for (auto &texture : material->texture_items) {
-			// 	gpuTexture->addTexture(entity->id, texture.name, texture.filePath);
-			// }
+			for (auto &texture : material->texture_items) {
+				gpuTexture->addTexture(entity->id, texture.name, texture.filePath);
+			}
 
-			for (auto &animation : entity->getComponent<Animation>()->animations) {
-				for (auto &frame : animation.frames) {
-					gpuTexture->addTexture3D(entity->id, animation.name.c_str(), frame.filePath);
+			if (animation) {
+				for (auto &anim : animation->animations) {
+					for (auto &frame : anim.frames) {
+						gpuTexture->addTexture3D(entity->id, anim.name.c_str(), frame.filePath);
+					}
 				}
 			}
 
@@ -56,12 +58,13 @@ class RenderSystem : public System {
 
 			gpuShader->addShaderVariable(entity->id, "isAnimated");
 			gpuShader->addShaderVariable(entity->id, "frameIndex");
+			gpuShader->addShaderVariable(entity->id, "hasColor");
+			gpuShader->addShaderVariable(entity->id, "solidColor");
 
 			gpuShader->setShaderData(entity->id, "isAnimated", 1);
 			gpuShader->setShaderData(entity->id, "frameIndex", 1);
 
-			// gpuShader->setActiveTexture(entity->id, material->getCurrentTextureLocation());
-			gpuTexture->printTextureNames(entity->id);
+			gpuShader->setActiveTexture(entity->id, material->getCurrentTextureLocation());
 		}
 	}
 
@@ -70,7 +73,6 @@ class RenderSystem : public System {
 
 			Transform *transform = entity->getComponent<Transform>();
 			Material *material = entity->getComponent<Material>();
-			Shader *shader = entity->getComponent<Shader>();
 			Animation *animation = entity->getComponent<Animation>();
 
 			gpuShader->use(entity->id);
@@ -79,16 +81,37 @@ class RenderSystem : public System {
 			gpuShader->setShaderMatrix(entity->id, "view", transform->view);
 			gpuShader->setShaderMatrix(entity->id, "projection", transform->projection);
 
-			// Bind every texture to a slot.
-			gpuTexture->bind(entity->id);
+			// Bind every texture to a slot. This should be fixed so the 2D and 3D textures do not
+			// collide.
+			// gpuTexture->bind(entity->id);
+
+			if (!material->texture_items.empty()) {
+				gpuTexture->use(entity->id, material->getCurrentTextureName());
+			}
+			if (animation && !animation->animations.empty()) {
+				gpuTexture->use(entity->id, animation->currentAnimation.name.c_str());
+			}
 
 			// Move the mainTexture to the slot asked by the material.
-			gpuShader->setShaderTexture(entity->id, "mainTexture", 1);
-			gpuShader->setShaderTexture(entity->id, "spriteArray", 0);
+			// Maybe these should be implicit.
+			gpuShader->setShaderTexture(entity->id, "mainTexture", 0);
+			gpuShader->setShaderTexture(entity->id, "spriteArray", 1);
 
-			gpuShader->setShaderData(entity->id, "isAnimated", true);
-			gpuShader->setShaderData(entity->id, "frameIndex",
-			                         animation->currentAnimation.currentFrameIndex);
+			if (material->hasColor) {
+				gpuShader->setShaderData(entity->id, "hasColor", true);
+				gpuShader->setShaderVector(entity->id, "solidColor", material->color);
+				gpuShader->setShaderData(entity->id, "isAnimated", false);
+			} else {
+				gpuShader->setShaderData(entity->id, "hasColor", false);
+				if (animation && animation->isPlaying) {
+					gpuShader->setShaderData(entity->id, "isAnimated", true);
+					gpuShader->setShaderData(entity->id, "frameIndex",
+					                         animation->currentAnimation.currentFrameIndex);
+				} else {
+					gpuShader->setShaderData(entity->id, "isAnimated", false);
+					gpuShader->setShaderData(entity->id, "frameIndex", 0);
+				}
+			}
 
 			gpuMesh->draw(entity->id);
 		}

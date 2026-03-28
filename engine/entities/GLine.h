@@ -2,28 +2,22 @@
 
 #include <iostream>
 #include <glad/glad.h>
-
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
-#include "Animation.h"
 #include "components/Mesh.h"
 #include "components/Transform.h"
 #include "components/Material.h"
 #include "components/Shader.h"
-#include "input/InputHandler.h"
+#include "meshes/GLineMesh.h"
+#include "shaders/GLine/Vertex.h"
+#include "shaders/GLine/Fragment.h"
 
-// =====================================================================================================
-// GRectangle
-// =====================================================================================================
-class GRect : public Entity {
+class GLine : public Entity {
   public:
 	Transform *transform;
 	Shader *shader;
 	Material *material;
 	Mesh *mesh;
-	Animation *animation;
 
   public:
 	std::pair<glm::vec2, glm::vec2> getLineEndpoints() {
@@ -37,20 +31,27 @@ class GRect : public Entity {
 		material->color = glm::vec4(r, g, b, a);
 	}
 
-	GRect() : GRect(0, 0, 0, 0) {}
-	GRect(int x, int y, int width, int height) : Entity(0) {
-
+	GLine() : Entity(0) {
 		this->addComponent<Shader>();
 		this->addComponent<Transform>();
 		this->addComponent<Material>();
 		this->addComponent<Mesh>();
-		this->addComponent<Animation>();
 
 		transform = this->getComponent<Transform>();
 		material = this->getComponent<Material>();
 		shader = this->getComponent<Shader>();
 		mesh = this->getComponent<Mesh>();
-		animation = this->getComponent<Animation>();
+
+		// Set GLine mesh
+		mesh->vertices = GLineMesh::vertices;
+		mesh->indices = GLineMesh::indices;
+		mesh->verticesCount = GLineMesh::verticesCount;
+		mesh->indicesCount = GLineMesh::indicesCount;
+		mesh->renderMode = 1; // GL_LINES = 1
+
+		// Set Shaders
+		shader->vertexSrc = GLineShader::vertexSrc;
+		shader->fragmentSrc = GLineShader::fragmentSrc;
 	}
 
 	void draw() override {}

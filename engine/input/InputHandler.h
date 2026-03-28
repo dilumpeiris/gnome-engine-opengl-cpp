@@ -126,6 +126,7 @@ void InputHandler::update() {
 		}
 	}
 
+
 	// Processing the key events.
 	while (!m_keyEventQueue.empty()) {
 		KeyEvent event = m_keyEventQueue.front();

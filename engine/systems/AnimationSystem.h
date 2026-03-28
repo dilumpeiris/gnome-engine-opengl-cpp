@@ -31,6 +31,7 @@ class AnimationSystem : public System {
 					animation->currentAnimation.currentFrameIndex =
 					    (animation->currentAnimation.currentFrameIndex + 1) %
 					    animation->currentAnimation.frames.size();
+					// This is important to keep a stable frame rate.
 					animation->currentAnimation.timer -= frameDurationInSeconds;
 				}
 			}

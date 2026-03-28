@@ -33,8 +33,7 @@ class GRect : public Entity {
 	}
 
 	void setColor(float r, float g, float b, float a) {
-		material->hasColor = true;
-		material->color = glm::vec4(r, g, b, a);
+		material->materials[material->getCurrentMaterialIndex()].color = glm::vec4(r, g, b, a);
 	}
 
 	GRect() : GRect(0, 0, 0, 0) {}

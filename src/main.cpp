@@ -28,66 +28,52 @@ class Game : public Gnome::GnomeEngine {
 		getcwd(cwd, sizeof(cwd));
 		std::cout << "Working directory: " << cwd << std::endl;
 
-		// Initialize my_rect with position and size data.
+		// Red rectangle
 		my_rect = new GRect(0, 0, 100, 100);
-
-		// Add my_rect to the game object manager in Gnome.
 		this->addEntity(my_rect);
+		my_rect->material->materials.push_back(MaterialAsset{});
+		my_rect->material->materials[0].color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+		my_rect->material->materials[0].addShaderPass("default", GRectShader::vertexSrc,
+		                                              GRectShader::fragmentSrc);
+		const char *frag = R"(
+					// checker.frag
+					#version 330 core
 
-		my_rect->material->addTexture("crate.jpg", "crate");
-		my_rect->setColor(1.0f, 1.0f, 1.0f, 1.0f);
+					in vec2 TexCoord;
 
-		my_rect->animation->addAnimation("walking-left", 50);
+					// uniform float u_scale;  // controls checker size, try 10.0
+					out vec4 fragColor;
 
-		my_rect->animation->addFrame("walking-left", "walking/walking-left-1.png", 0);
-		my_rect->animation->addFrame("walking-left", "walking/walking-left-2.png", 1);
-		my_rect->animation->addFrame("walking-left", "walking/walking-left-3.png", 2);
-		my_rect->animation->addFrame("walking-left", "walking/walking-left-4.png", 3);
-		my_rect->animation->addFrame("walking-left", "walking/walking-left-5.png", 4);
-		my_rect->animation->addFrame("walking-left", "walking/walking-left-6.png", 5);
-		my_rect->animation->addFrame("walking-left", "walking/walking-left-7.png", 6);
-		my_rect->animation->addFrame("walking-left", "walking/walking-left-8.png", 7);
+					void main() {
+						vec2  grid  = floor(TexCoord * 10.0);
+						float check = mod(grid.x + grid.y, 2.0);
+						fragColor   = vec4(vec3(check), 0.4);
+					}
+		)";
 
-		// my_rect->material->useTexture("walking-left");
+		my_rect->material->materials[0].addShaderPass("checker", GRectShader::vertexSrc, frag);
 
-		my_rect->animation->playAnimation("walking-left");
-
-		// Optionally set animation speed
-		setAnimationSpeed(20.0f);
-
-		// Initialize line
+		// Green line
 		line = new GLine();
 		this->addEntity(line);
-		line->setColor(0.0f, 1.0f, 0.0f, 1.0f); // Green line
+		line->material->materials.push_back(MaterialAsset{});
+		line->material->materials[0].color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	}
+
 	void Render() override {
-
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_A)) {
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_A))
 			line->transform->translateAbsolute(-0.05f, 0.0f, 0.0f);
-		}
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_W)) {
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_W))
 			line->transform->translateAbsolute(0.0f, 0.05f, 0.0f);
-		}
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_S)) {
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_S))
 			line->transform->translateAbsolute(0.0f, -0.05f, 0.0f);
-		}
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_D)) {
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_D))
 			line->transform->translateAbsolute(0.05f, 0.0f, 0.0f);
-		}
-
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_LEFT)) {
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_LEFT))
 			line->transform->rotateAbsolute(2.0f, 0.0f, 0.0f, 1.0f);
-		}
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_RIGHT)) {
+		if (InputHandler::get().isKeyHeld(GLFW_KEY_RIGHT))
 			line->transform->rotateAbsolute(-2.0f, 0.0f, 0.0f, 1.0f);
-		}
-
-		// Endpoints for collision system
-		std::pair<glm::vec2, glm::vec2> endpoints = line->getLineEndpoints();
-		// std::cout << "Line points: (" << endpoints.first.x << ", " << endpoints.first.y << ") to
-		// ("
-		//           << endpoints.second.x << ", " << endpoints.second.y << ")" << std::endl;
-	}
+	};
 };
 
 int main() {

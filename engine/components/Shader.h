@@ -9,14 +9,6 @@
 // Shader Structs
 // =====================================================================================================
 
-struct ShaderPass {
-	const char *vertexSrc;
-	const char *fragmentSrc;
-	bool depthWrite;
-	bool depthTest;
-	GLenum blendSrc, blendDst;
-};
-
 // =====================================================================================================
 // Shader Component
 // =====================================================================================================
@@ -25,8 +17,6 @@ class Shader : public Component {
 	const char *vertexSrc;
 	const char *fragmentSrc;
 
-	std::vector<ShaderPass> passes;
-
   public:
 	Shader() {
 		this->vertexSrc = GRectShader::vertexSrc;
@@ -34,9 +24,4 @@ class Shader : public Component {
 	}
 
 	void update() override {}
-
-	void addPass(const char *vertexSrc, const char *fragmentSrc, bool depthWrite, bool depthTest,
-	             GLenum blendSrc, GLenum blendDst) {
-		passes.push_back({vertexSrc, fragmentSrc, depthWrite, depthTest, blendSrc, blendDst});
-	}
 };

@@ -23,12 +23,11 @@ class GLine : public Entity {
 	std::pair<glm::vec2, glm::vec2> getLineEndpoints() {
 		glm::vec4 p1 = transform->view * glm::vec4(-1.0f, 0.0f, 0.0f, 1.0f);
 		glm::vec4 p2 = transform->view * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-		return { glm::vec2(p1.x, p1.y), glm::vec2(p2.x, p2.y) };
+		return {glm::vec2(p1.x, p1.y), glm::vec2(p2.x, p2.y)};
 	}
 
 	void setColor(float r, float g, float b, float a) {
-		material->hasColor = true;
-		material->color = glm::vec4(r, g, b, a);
+		material->materials[material->getCurrentMaterialIndex()].color = glm::vec4(r, g, b, a);
 	}
 
 	GLine() : Entity(0) {

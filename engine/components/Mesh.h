@@ -26,6 +26,14 @@ class Mesh : public Component {
 		this->indices = GRectangleMesh::indices;
 		this->verticesCount = GRectangleMesh::verticesCount;
 		this->indicesCount = GRectangleMesh::indicesCount;
+
+		asset.vertices.assign(GRectangleMesh::vertices,
+		                      GRectangleMesh::vertices + GRectangleMesh::verticesCount);
+		asset.indices.assign(GRectangleMesh::indices,
+		                     GRectangleMesh::indices + GRectangleMesh::indicesCount);
+		asset.vertexCount = GRectangleMesh::verticesCount;
+		asset.indexCount = GRectangleMesh::indicesCount;
+		asset.renderMode = GL_TRIANGLES;
 	}
 
 	void setCollide(bool collide) { this->collide = collide; }

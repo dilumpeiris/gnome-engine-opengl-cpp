@@ -14,6 +14,11 @@ class FileHandler {
 	static unsigned char *loadImage(const char *fileName, int *width, int *height, int *nrChannels,
 	                                GLenum *format, bool flipped = false) {
 
+		if (!fileName) {
+			std::cout << "Error: fileName is NULL" << std::endl;
+			return nullptr;
+		}
+
 		std::stringstream ss;
 		ss << "../assets/textures/" << fileName;
 		std::string temp = ss.str();

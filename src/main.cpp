@@ -10,31 +10,23 @@
 
 class Game : public Gnome::GnomeEngine {
   public:
-	// Create a Rectangle object using the prebuilt GRect Entity class.
 	GRect *my_rect;
-	GLine *line;
-
-	int currentAnimationFrame = 0;
-	int maxAnimationFrames = 8;
-
-	float animationTimer = 0.0f;
-	float animationSpeedFPS = 20.0f; // Default animation speed
-
-  public:
-	void setAnimationSpeed(float fps) { animationSpeedFPS = fps; }
 
 	void setup() {
+
 		char cwd[1024];
 		getcwd(cwd, sizeof(cwd));
 		std::cout << "Working directory: " << cwd << std::endl;
 
-		// Red rectangle
 		my_rect = new GRect(0, 0, 100, 100);
+
 		this->addEntity(my_rect);
+
 		my_rect->material->materials.push_back(MaterialAsset{});
 		my_rect->material->materials[0].color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 		my_rect->material->materials[0].addShaderPass("default", GRectShader::vertexSrc,
 		                                              GRectShader::fragmentSrc);
+
 		const char *frag = R"(
 					// checker.frag
 					#version 330 core
@@ -51,29 +43,33 @@ class Game : public Gnome::GnomeEngine {
 					}
 		)";
 
+		// Shader Passes are not handled here but for now this works.<D-s>
 		my_rect->material->materials[0].addShaderPass("checker", GRectShader::vertexSrc, frag);
 
-		// Green line
-		line = new GLine();
-		this->addEntity(line);
-		line->material->materials.push_back(MaterialAsset{});
-		line->material->materials[0].color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+		TextureAsset texture;
+		texture.filePath = "crate.jpg";
+
+		TextureAsset texture2;
+		texture2.filePath = "crate.jpg";
+
+		TextureAsset texture3;
+		texture3.filePath = "crate.jpg";
+
+		AnimationAsset anim;
+		anim.frameDuration = 100; // 100 ms per frame
+		anim.loop = true;
+		anim.width = 256;
+		anim.height = 256;
+		anim.depth = 3; // 3 frames in the animation
+
+		anim.frames.push_back(texture);
+		anim.frames.push_back(texture2);
+		anim.frames.push_back(texture3);
+
+		my_rect->animation->addAnimation("spin", anim);
 	}
 
-	void Render() override {
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_A))
-			line->transform->translateAbsolute(-0.05f, 0.0f, 0.0f);
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_W))
-			line->transform->translateAbsolute(0.0f, 0.05f, 0.0f);
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_S))
-			line->transform->translateAbsolute(0.0f, -0.05f, 0.0f);
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_D))
-			line->transform->translateAbsolute(0.05f, 0.0f, 0.0f);
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_LEFT))
-			line->transform->rotateAbsolute(2.0f, 0.0f, 0.0f, 1.0f);
-		if (InputHandler::get().isKeyHeld(GLFW_KEY_RIGHT))
-			line->transform->rotateAbsolute(-2.0f, 0.0f, 0.0f, 1.0f);
-	};
+	void Render() override {};
 };
 
 int main() {

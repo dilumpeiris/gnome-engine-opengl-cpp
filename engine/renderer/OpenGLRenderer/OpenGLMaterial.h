@@ -6,6 +6,7 @@
 #include <vector>
 #include "../GPUMaterial.h"
 #include "assets/MaterialAsset.h"
+#include "assets/AnimationAsset.h"
 #include <cstddef>
 
 #include "files/FileHandler.h"
@@ -36,6 +37,17 @@ struct GPUMat {
 	GLenum blendSrc, blendDst;
 };
 
+struct GPUAnim {
+	GLuint id;
+	std::string name = "";
+
+	int height, width, depth; // depth = number of frames/layers
+	float frameDuration;
+	bool loop;
+	float timer = 0.0f;
+	int currentFrameIndex = 0;
+};
+
 struct RenderEntry {
 	GPUMesh mesh;
 	GPUMat material;
@@ -50,6 +62,7 @@ class OpenGLMaterial : public GPUMaterial {
   private:
 	std::unordered_map<std::size_t, RenderEntry> renderEntries;
 	std::unordered_map<std::size_t, std::vector<std::string>> entityShaders;
+	std::unordered_map<std::size_t, std::unordered_map<std::string, GPUAnim>> entityAnimations;
 
   public:
 	void init(std::size_t entityID, MaterialAsset material, MeshAsset mesh) override {
@@ -57,13 +70,6 @@ class OpenGLMaterial : public GPUMaterial {
 		GPUMesh gpuMesh = createMesh(mesh);
 
 		GPUMat gpuMaterial;
-
-		// if (material.normal.filePath != nullptr)
-		// 	gpuMaterial.textures.emplace_back(material.normal);
-
-		// GPUShaderPass shader = createShader(GRectShader::vertexSrc, GRectShader::fragmentSrc);
-
-		// gpuMaterial.shaders.emplace_back(shader);
 
 		renderEntries[entityID] = {gpuMesh, gpuMaterial, glm::mat4(1.0f)};
 	}
@@ -169,5 +175,75 @@ class OpenGLMaterial : public GPUMaterial {
 		             nullptr);
 
 		return textureImage;
+	}
+
+	void createTexture3D(GPUAnim &anim) {
+		glBindTexture(GL_TEXTURE_3D, anim.id);
+
+		// Set texture parameters for 3D target
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE); // depth axis
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		// Allocate storage for 3D texture
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8,
+		             anim.width,  // width
+		             anim.height, // height
+		             anim.depth,  // depth = number of frames/layers
+		             0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	}
+
+	void addTexture3D(GPUAnim &anim, TextureAsset texture) {
+
+		bool repeat_x = false, repeat_y = false, flipped = false;
+
+		int width, height, nrChannels;
+		GLenum format;
+		unsigned char *data = FileHandler::loadImage(texture.filePath, &width, &height, &nrChannels,
+		                                             &format, flipped);
+		if (!data) {
+			std::cout << "Error: Failed to load texture: " << texture.filePath << std::endl;
+			return;
+		}
+
+		glBindTexture(GL_TEXTURE_3D, anim.id); // bind existing texture, don't generate new
+
+		// upload into specific layer
+		glTexSubImage3D(GL_TEXTURE_3D,
+		                0,                      // mip level
+		                0, 0,                   // x, y offset
+		                anim.currentFrameIndex, // z offset = layer index ← correct place
+		                width, height,
+		                1, // one layer at a time
+		                GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+		anim.currentFrameIndex++;
+
+		FileHandler::freeImage(data);
+	}
+
+	void addAnimation(std::size_t entityID, std::string name, AnimationAsset asset) override {
+
+		if (entityAnimations[entityID][name].name != name) {
+			GPUAnim anim;
+			anim.name = name;
+			anim.width = asset.width;
+			anim.height = asset.height;
+			anim.depth = asset.depth;
+			anim.frameDuration = asset.frameDuration;
+			anim.loop = asset.loop;
+
+			createTexture3D(anim);
+
+			entityAnimations[entityID][name] = anim;
+		}
+
+		GPUAnim &anim = entityAnimations[entityID][name];
+
+		for (auto &frame : asset.frames) {
+			addTexture3D(anim, frame);
+		}
 	}
 };

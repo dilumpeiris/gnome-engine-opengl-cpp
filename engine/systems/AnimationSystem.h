@@ -16,25 +16,6 @@ class AnimationSystem : public System {
 
 			if (!animation)
 				continue;
-
-			if (animation->isPlaying && !animation->animations.empty() &&
-			    !animation->currentAnimation.frames.empty()) {
-
-				// Accumulate delta time
-				animation->currentAnimation.timer += GnomeTime::getDeltaTime();
-
-				// Convert frameDuration from milliseconds to seconds
-				float frameDurationInSeconds = animation->currentAnimation.frameDuration / 1000.0f;
-
-				// Advance frame if enough time has passed
-				while (animation->currentAnimation.timer >= frameDurationInSeconds) {
-					animation->currentAnimation.currentFrameIndex =
-					    (animation->currentAnimation.currentFrameIndex + 1) %
-					    animation->currentAnimation.frames.size();
-					// This is important to keep a stable frame rate.
-					animation->currentAnimation.timer -= frameDurationInSeconds;
-				}
-			}
 		}
 	}
 };

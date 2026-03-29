@@ -3,6 +3,7 @@
 #include "renderer/OpenGLRenderer/OpenGLMaterial.h"
 #include "components/Material.h"
 #include "components/Mesh.h"
+#include "components/Animation.h"
 
 class RenderSystem : public System {
   public:
@@ -13,14 +14,27 @@ class RenderSystem : public System {
 		gpuMaterial = new OpenGLMaterial();
 
 		for (auto &entity : this->manager->entities) {
+
 			Material *mat = entity->getComponent<Material>();
 			Mesh *mesh = entity->getComponent<Mesh>();
+
+			Animation *anim = entity->getComponent<Animation>();
+
 			if (!mat || mat->materials.empty() || !mesh)
 				continue;
+
 			gpuMaterial->init(entity->id, mat->materials[0], mesh->asset);
 
-			for (auto &shader : mat->materials[0].passes) {
-				gpuMaterial->addShader(entity->id, shader);
+			if (anim) {
+				for (auto &animation : anim->animationAssets) {
+					gpuMaterial->addAnimation(entity->id, animation.first, animation.second);
+					std::cout << "Added animation: " << animation.first
+					          << " to entity: " << entity->id << std::endl;
+				}
+
+				for (auto &shader : mat->materials[0].passes) {
+					gpuMaterial->addShader(entity->id, shader);
+				}
 			}
 		}
 	}
